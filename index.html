@@ -388,14 +388,34 @@ h1 {
     }
 
     .testimonial {
-      background: linear-gradient(135deg, rgba(91, 62, 168, 0.08), rgba(143, 119, 216, 0.08));
-      border: 1px solid var(--line);
-    }
+  padding: 30px;
+  background: linear-gradient(135deg, rgba(91, 62, 168, 0.08), rgba(143, 119, 216, 0.08));
+  border: 1px solid var(--line);
+}
 
-    .testimonial em {
-      color: var(--muted);
-      font-style: italic;
-    }
+.testimonial-label {
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--brand-dark);
+}
+
+.testimonial-quote {
+  margin: 0;
+  font-size: 1.08rem;
+  line-height: 1.75;
+  color: var(--text);
+  font-style: italic;
+}
+
+.testimonial-credit {
+  margin: 16px 0 0;
+  font-size: 0.96rem;
+  font-weight: 600;
+  color: var(--muted);
+}
 
     .cta {
       padding: 12px 0 72px;
@@ -783,14 +803,18 @@ h1 {
     </section>
 
     <section id="testimonial">
-      <div class="container">
-        <div class="card testimonial">
-          <h3>Testimonial</h3>
-          <p><em>“Willem’s editing of my dissertation was careful, clear, and professional, and he was mindful of the specifics of my field. The changes were easy to follow, communication was good throughout, and I still felt fully in control of my document. The process gave me more confidence in the final version.”
-— EV, Master’s student (Industrial and Organisational Psychology, NWU)</em></p>
-        </div>
-      </div>
-    </section>
+  <div class="container">
+    <div class="card testimonial">
+      <p class="testimonial-label">Client feedback</p>
+      <blockquote class="testimonial-quote">
+        “Willem’s editing of my mini-dissertation was careful, clear, and professional, and he was mindful of the specifics of my field. The changes were easy to follow, communication was good throughout, and I still felt fully in control of my document. The process gave me more confidence in the final version.”
+      </blockquote>
+      <p class="testimonial-credit">
+        — EV, Master’s student (Industrial and Organisational Psychology, NWU)
+      </p>
+    </div>
+  </div>
+</section>
 
     <section class="cta" id="contact">
       <div class="container">
