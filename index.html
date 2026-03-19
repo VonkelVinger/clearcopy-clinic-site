@@ -387,19 +387,35 @@ h1 {
       color: var(--muted);
     }
 
-    .testimonial {
-  padding: 30px;
+  .testimonial {
+  position: relative;
+  padding: 34px 30px 30px;
   background: linear-gradient(135deg, rgba(91, 62, 168, 0.08), rgba(143, 119, 216, 0.08));
   border: 1px solid var(--line);
+  overflow: hidden;
 }
 
-.testimonial-label {
-  margin: 0 0 12px;
-  font-size: 0.9rem;
+.testimonial::before {
+  content: "“";
+  position: absolute;
+  top: 10px;
+  left: 18px;
+  font-size: 5.5rem;
+  line-height: 1;
+  color: rgba(91, 62, 168, 0.12);
   font-weight: 700;
-  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+    
+.testimonial-label {
+  margin: 0 0 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--brand-dark);
+  position: relative;
+  z-index: 1;
 }
 
 .testimonial-quote {
@@ -408,6 +424,8 @@ h1 {
   line-height: 1.75;
   color: var(--text);
   font-style: italic;
+  position: relative;
+  z-index: 1;
 }
 
 .testimonial-credit {
