@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Headline Clinic | ClearCopy Clinic</title>
+  <meta name="description" content="A guided headline-review space for journalism students from ClearCopy Clinic." />
+  <style>
+    :root {
+      --surface: #ffffff;
+      --surface-soft: #f1edf8;
+      --text: #1c1630;
+      --muted: #5f5876;
+      --line: #ddd6ee;
+      --brand: #5b3ea8;
+      --brand-dark: #452d82;
+      --brand-soft: #ece6fb;
+      --accent: #8f77d8;
+      --max: 1120px;
+      --radius: 18px;
+      --shadow: 0 12px 32px rgba(46, 28, 87, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg, #faf8ff 0%, #f4f1fb 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 3px solid rgba(143, 119, 216, 0.55);
+      outline-offset: 3px;
+    }
+
+    .container { width: min(var(--max), calc(100% - 32px)); margin: 0 auto; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(250, 248, 255, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(221, 214, 238, 0.7);
+    }
+
+    .header-inner { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; color: var(--brand-dark); font-size: 1.25rem; font-weight: 800; letter-spacing: 0.01em; }
+    .brand-mark { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 12px; background: linear-gradient(135deg, var(--brand), var(--accent)); color: #fff; box-shadow: 0 10px 22px rgba(91, 62, 168, 0.25); }
+    .back-link { color: var(--muted); font-weight: 600; }
+    .back-link:hover { color: var(--brand-dark); }
+
+    .page-intro { padding: 60px 0 28px; }
+    .intro-panel, .form-card, .feedback-card { background: var(--surface); border: 1px solid rgba(221, 214, 238, 0.8); border-radius: 28px; box-shadow: var(--shadow); }
+    .intro-panel { padding: 44px; background: radial-gradient(circle at top right, rgba(143, 119, 216, 0.13), transparent 34%), var(--surface); }
+    .eyebrow { display: inline-flex; margin-bottom: 18px; padding: 8px 12px; border-radius: 999px; background: var(--brand-soft); color: var(--brand-dark); font-size: 0.9rem; font-weight: 600; }
+    h1 { margin: 0 0 14px; font-size: clamp(2.1rem, 4.2vw, 3.5rem); line-height: 1.08; letter-spacing: -0.025em; }
+    .intro-panel p { max-width: 65ch; margin: 0; color: var(--muted); font-size: 1.08rem; }
+
+    .workspace { padding: 0 0 72px; }
+    .workspace-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr); gap: 28px; align-items: start; }
+    .form-card, .feedback-card { padding: 30px; }
+    h2 { margin: 0 0 8px; font-size: 1.45rem; line-height: 1.2; }
+    .card-intro { margin: 0 0 24px; color: var(--muted); }
+    .form-field { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 8px; font-weight: 700; }
+    .field-hint { display: block; margin: -2px 0 8px; color: var(--muted); font-size: 0.92rem; }
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--text);
+      font: inherit;
+      line-height: 1.5;
+      padding: 13px 14px;
+    }
+    textarea { min-height: 190px; resize: vertical; }
+    input::placeholder, textarea::placeholder { color: #7a718f; }
+    .button { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; padding: 0 18px; border: 0; border-radius: 999px; background: var(--brand); color: #fff; box-shadow: 0 10px 24px rgba(91, 62, 168, 0.2); cursor: pointer; font: inherit; font-weight: 600; transition: 0.2s ease; }
+    .button:hover { background: var(--brand-dark); transform: translateY(-1px); }
+    .privacy-note { margin: 18px 0 0; padding: 14px 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface-soft); color: var(--muted); font-size: 0.94rem; }
+    .privacy-note strong { color: var(--text); }
+
+    .feedback-card { background: linear-gradient(180deg, var(--surface), #fcfbff); }
+    .feedback-card > p { margin: 0 0 20px; color: var(--muted); }
+    .feedback-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .feedback-item { padding: 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+    .feedback-item h3 { margin: 0 0 4px; color: var(--brand-dark); font-size: 1rem; }
+    .feedback-item p { margin: 0; color: var(--muted); font-size: 0.93rem; }
+    .empty-state { margin: 20px 0 0; padding: 14px 16px; border-radius: 14px; background: var(--brand-soft); color: var(--brand-dark); font-size: 0.94rem; }
+
+    .site-footer { padding: 0 0 34px; color: var(--muted); font-size: 0.95rem; }
+    .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 18px; border-top: 1px solid var(--line); }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 16px; }
+    .footer-links a:hover { color: var(--brand-dark); }
+
+    @media (max-width: 760px) {
+      .workspace-grid { grid-template-columns: 1fr; }
+      .intro-panel, .form-card, .feedback-card { padding: 28px 22px; }
+      .button { width: 100%; }
+    }
+
+    @media (max-width: 720px) {
+      .site-header { position: static; }
+      .header-inner { min-height: auto; padding: 14px 0; flex-direction: column; align-items: flex-start; }
+      .brand { font-size: 1.2rem; }
+      .brand-mark { width: 44px; height: 44px; }
+      .page-intro { padding-top: 36px; }
+      .workspace { padding-bottom: 56px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="ClearCopy Clinic home">
+        <span class="brand-mark" aria-hidden="true">CC</span>
+        <span>ClearCopy Clinic</span>
+      </a>
+      <a class="back-link" href="/">Back to home</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-intro" aria-labelledby="page-title">
+      <div class="container">
+        <div class="intro-panel">
+          <div class="eyebrow">A guided practice space for students</div>
+          <h1 id="page-title">Headline Clinic</h1>
+          <p>Use this space to reflect on a headline you have written. Headline Clinic is designed to coach you through the qualities of an effective headline; it does not write the headline for you.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="workspace" aria-label="Headline review form">
+      <div class="container workspace-grid">
+        <div class="form-card">
+          <h2>Bring your headline to the clinic</h2>
+          <p class="card-intro">Add enough context to help you assess whether your proposed headline is accurate, clear and appropriate for the story.</p>
+
+          <form>
+            <div class="form-field">
+              <label for="story-type">Story type</label>
+              <select id="story-type" name="story-type">
+                <option value="">Choose a story type</option>
+                <option value="hard-news">Hard news</option>
+                <option value="feature">Feature</option>
+                <option value="opinion">Opinion</option>
+                <option value="community-journalism">Community journalism</option>
+                <option value="digital-social">Digital or social headline</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label for="story-summary">Article or story summary</label>
+              <span class="field-hint" id="summary-hint">Briefly describe the central facts, angle and audience.</span>
+              <textarea id="story-summary" name="story-summary" aria-describedby="summary-hint" placeholder="Write a short summary of your story here..."></textarea>
+            </div>
+
+            <div class="form-field">
+              <label for="proposed-headline">Your proposed headline</label>
+              <input id="proposed-headline" name="proposed-headline" type="text" placeholder="Enter the headline you have written" />
+            </div>
+
+            <div class="form-field">
+              <label for="published-headline">Published headline (optional)</label>
+              <span class="field-hint" id="published-headline-hint">If a version has already been published, add it here for comparison.</span>
+              <input id="published-headline" name="published-headline" type="text" aria-describedby="published-headline-hint" placeholder="Enter the published headline, if available" />
+            </div>
+
+            <button class="button" type="button">Check my headline</button>
+          </form>
+
+          <p class="privacy-note"><strong>Protect your sources.</strong> Please do not paste confidential, identifying or unpublished source information at this stage. Use a generalised summary instead.</p>
+        </div>
+
+        <aside class="feedback-card" aria-labelledby="feedback-title" aria-live="polite">
+          <h2 id="feedback-title">Headline feedback</h2>
+          <p>Use these lenses to review your work. Feedback will appear here when headline checking is available.</p>
+          <ul class="feedback-list">
+            <li class="feedback-item"><h3>Accuracy</h3><p>Does the headline faithfully reflect what the story establishes?</p></li>
+            <li class="feedback-item"><h3>Clarity</h3><p>Can a reader understand the headline quickly and without ambiguity?</p></li>
+            <li class="feedback-item"><h3>Specificity</h3><p>Does it name the most useful subject, action or outcome?</p></li>
+            <li class="feedback-item"><h3>News value</h3><p>Does it foreground what makes this story matter to the audience?</p></li>
+            <li class="feedback-item"><h3>Style</h3><p>Does the wording fit the selected story type and intended publication?</p></li>
+            <li class="feedback-item"><h3>Fairness and risk</h3><p>Could the wording overstate, mislead or create an avoidable risk?</p></li>
+          </ul>
+          <p class="empty-state">No headline has been checked yet.</p>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>&copy; 2026 ClearCopy Clinic</div>
+      <div class="footer-links">
+        <a href="/privacy.html">Privacy</a>
+        <a href="/cookies.html">Cookies</a>
+        <a href="mailto:hello@clearcopy.clinic">hello@clearcopy.clinic</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
