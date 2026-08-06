@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "clearcopy-clinic-pilot-placeholder"
-  }
+    "default": "clear-copy-clinic"
+  },
+  "targets": {},
+  "etags": {}
 }
