@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const API_URL = "http://127.0.0.1:5001/clearcopy-clinic-pilot-placeholder/us-central1/assessHeadline";
+  const API_URL = "https://us-central1-clear-copy-clinic.cloudfunctions.net/assessHeadline";
   const REQUEST_TIMEOUT_MS = 25_000;
   const CATEGORIES = ["Accuracy", "Clarity", "Specificity", "News value", "Style", "Fairness and risk"];
   const RATINGS = new Set(["Strong", "Needs attention", "Serious problem"]);
@@ -101,8 +101,15 @@
         row.appendChild(question);
       }
       if (item.seriousWarning) {
-        const warning = document.createElement("p");
-        warning.textContent = `Warning: ${item.seriousWarning}`;
+        const warning = document.createElement("section");
+        warning.className = "human-review-callout";
+        warning.setAttribute("role", "note");
+        warning.setAttribute("aria-label", "Human review required");
+        const warningHeading = document.createElement("h4");
+        warningHeading.textContent = "Human review required";
+        const warningText = document.createElement("p");
+        warningText.textContent = item.seriousWarning;
+        warning.append(warningHeading, warningText);
         row.appendChild(warning);
       }
       list.appendChild(row);
