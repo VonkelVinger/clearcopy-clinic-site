@@ -86,8 +86,18 @@
     input::placeholder, textarea::placeholder { color: #7a718f; }
     .button { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; padding: 0 18px; border: 0; border-radius: 999px; background: var(--brand); color: #fff; box-shadow: 0 10px 24px rgba(91, 62, 168, 0.2); cursor: pointer; font: inherit; font-weight: 600; transition: 0.2s ease; }
     .button:hover { background: var(--brand-dark); transform: translateY(-1px); }
-    .privacy-note { margin: 18px 0 0; padding: 14px 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface-soft); color: var(--muted); font-size: 0.94rem; }
-    .privacy-note strong { color: var(--text); }
+    .trust-note { margin: 0 0 26px; padding: 18px 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-soft); }
+    .trust-note h3 { margin: 0 0 8px; color: var(--brand-dark); font-size: 1.05rem; }
+    .trust-note p { margin: 0; color: var(--muted); font-size: 0.94rem; }
+    .trust-list { display: grid; gap: 8px; margin: 12px 0 0; padding-left: 20px; color: var(--muted); font-size: 0.94rem; }
+    .trust-list strong { color: var(--text); }
+    .form-message { margin: 0 0 18px; padding: 12px 14px; border-radius: 14px; }
+    .form-message[hidden] { display: none; }
+    .form-error { border: 1px solid #c94d58; background: #fff1f2; color: #7d1d2a; }
+    .form-status { border: 1px solid var(--line); background: var(--surface-soft); color: var(--brand-dark); }
+    .field-error { display: block; margin-top: 7px; color: #9b2434; font-size: 0.9rem; }
+    .has-error { border-color: #c94d58; }
+    .button:disabled { cursor: wait; opacity: 0.72; transform: none; }
 
     .feedback-card { background: linear-gradient(180deg, var(--surface), #fcfbff); }
     .feedback-card > p { margin: 0 0 20px; color: var(--muted); }
@@ -95,6 +105,16 @@
     .feedback-item { padding: 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
     .feedback-item h3 { margin: 0 0 4px; color: var(--brand-dark); font-size: 1rem; }
     .feedback-item p { margin: 0; color: var(--muted); font-size: 0.93rem; }
+    .story-evidence { margin-top: 14px; padding: 12px 14px; border-radius: 12px; background: var(--surface-soft); }
+    .story-evidence h4 { margin: 0 0 6px; color: var(--brand-dark); font-size: 0.9rem; }
+    .story-evidence ul { margin: 0; padding-left: 20px; color: var(--muted); font-size: 0.9rem; }
+    .story-evidence li + li { margin-top: 4px; }
+    .human-review-callout { margin-top: 14px; padding: 14px 16px; border: 1px solid #a36a17; border-left: 5px solid #a36a17; border-radius: 12px; background: #fff8e8; }
+    .human-review-callout h4 { margin: 0 0 4px; color: #6c4308; font-size: 0.95rem; }
+    .human-review-callout p { color: #5a431e; }
+    .next-step { padding: 18px; border: 1px solid var(--accent); border-radius: var(--radius); background: var(--brand-soft); }
+    .next-step h3 { margin: 0 0 5px; color: var(--brand-dark); font-size: 1rem; }
+    .next-step p { margin: 0; color: var(--text); font-size: 0.94rem; }
     .empty-state { margin: 20px 0 0; padding: 14px 16px; border-radius: 14px; background: var(--brand-soft); color: var(--brand-dark); font-size: 0.94rem; }
 
     .site-footer { padding: 0 0 34px; color: var(--muted); font-size: 0.95rem; }
@@ -105,6 +125,7 @@
     @media (max-width: 760px) {
       .workspace-grid { grid-template-columns: 1fr; }
       .intro-panel, .form-card, .feedback-card { padding: 28px 22px; }
+      .trust-note { padding: 16px; }
       .button { width: 100%; }
     }
 
@@ -146,10 +167,30 @@
           <h2>Bring your headline to the clinic</h2>
           <p class="card-intro">Add enough context to help you assess whether your proposed headline is accurate, clear and appropriate for the story.</p>
 
-          <form>
+          <section class="trust-note" aria-labelledby="before-submit-title">
+            <h3 id="before-submit-title">Before you submit</h3>
+            <p>Headline Clinic provides AI-assisted editorial coaching. It helps you assess a headline you have written; it does not write one for you.</p>
+            <ul class="trust-list">
+              <li><strong>Protect your sources.</strong> Submit only material you have the right or permission to use. Do not include confidential, embargoed, source-identifying, legally sensitive or otherwise restricted material; use a generalised summary instead.</li>
+              <li>Your story summary and headline are sent to an external AI provider only to produce the assessment you request. ClearCopy Clinic does not intentionally store this content in an application database for this pilot. External service providers may temporarily retain data under their own service and security policies.</li>
+              <li>If feedback says <strong>Human review required</strong>, ask an editor, lecturer, supervisor or other appropriate person to check the issue before publication.</li>
+            </ul>
+          </section>
+
+          <form id="headline-form" novalidate>
+            <div id="form-error" class="form-message form-error" role="alert" hidden></div>
+            <div id="form-status" class="form-message form-status" role="status" aria-live="polite" hidden></div>
+
+            <div class="form-field">
+              <label for="pilot-access-code">Pilot access code</label>
+              <span class="field-hint" id="access-code-hint">This invite-only pilot requires the code you received.</span>
+              <input id="pilot-access-code" name="accessCode" type="password" inputmode="text" autocomplete="one-time-code" minlength="8" maxlength="32" aria-describedby="access-code-hint" required />
+              <span class="field-error" id="access-code-error" hidden></span>
+            </div>
+
             <div class="form-field">
               <label for="story-type">Story type</label>
-              <select id="story-type" name="story-type">
+              <select id="story-type" name="storyType" required aria-describedby="story-type-error">
                 <option value="">Choose a story type</option>
                 <option value="hard-news">Hard news</option>
                 <option value="feature">Feature</option>
@@ -157,43 +198,45 @@
                 <option value="community-journalism">Community journalism</option>
                 <option value="digital-social">Digital or social headline</option>
               </select>
+              <span class="field-error" id="story-type-error" hidden></span>
             </div>
 
             <div class="form-field">
               <label for="story-summary">Article or story summary</label>
               <span class="field-hint" id="summary-hint">Briefly describe the central facts, angle and audience.</span>
-              <textarea id="story-summary" name="story-summary" aria-describedby="summary-hint" placeholder="Write a short summary of your story here..."></textarea>
+              <textarea id="story-summary" name="storySummary" aria-describedby="summary-hint story-summary-error" placeholder="Write a short summary of your story here..." minlength="80" maxlength="4000" required></textarea>
+              <span class="field-error" id="story-summary-error" hidden></span>
             </div>
 
             <div class="form-field">
               <label for="proposed-headline">Your proposed headline</label>
-              <input id="proposed-headline" name="proposed-headline" type="text" placeholder="Enter the headline you have written" />
+              <input id="proposed-headline" name="proposedHeadline" type="text" placeholder="Enter the headline you have written" minlength="5" maxlength="140" aria-describedby="proposed-headline-error" required />
+              <span class="field-error" id="proposed-headline-error" hidden></span>
             </div>
 
             <div class="form-field">
               <label for="published-headline">Published headline (optional)</label>
               <span class="field-hint" id="published-headline-hint">If a version has already been published, add it here for comparison.</span>
-              <input id="published-headline" name="published-headline" type="text" aria-describedby="published-headline-hint" placeholder="Enter the published headline, if available" />
+              <input id="published-headline" name="publishedHeadline" type="text" maxlength="140" aria-describedby="published-headline-hint published-headline-error" placeholder="Enter the published headline, if available" />
+              <span class="field-error" id="published-headline-error" hidden></span>
             </div>
 
-            <button class="button" type="button">Check my headline</button>
+            <button class="button" id="check-headline-button" type="submit">Check my headline</button>
           </form>
-
-          <p class="privacy-note"><strong>Protect your sources.</strong> Please do not paste confidential, identifying or unpublished source information at this stage. Use a generalised summary instead.</p>
         </div>
 
-        <aside class="feedback-card" aria-labelledby="feedback-title" aria-live="polite">
+        <aside class="feedback-card" id="feedback-panel" aria-labelledby="feedback-title" aria-live="polite" aria-busy="false">
           <h2 id="feedback-title">Headline feedback</h2>
-          <p>Use these lenses to review your work. Feedback will appear here when headline checking is available.</p>
-          <ul class="feedback-list">
+          <p id="feedback-intro">Use these lenses to review your work. Feedback will appear here after you check a headline.</p>
+          <div class="feedback-list" id="feedback-list">
             <li class="feedback-item"><h3>Accuracy</h3><p>Does the headline faithfully reflect what the story establishes?</p></li>
             <li class="feedback-item"><h3>Clarity</h3><p>Can a reader understand the headline quickly and without ambiguity?</p></li>
             <li class="feedback-item"><h3>Specificity</h3><p>Does it name the most useful subject, action or outcome?</p></li>
             <li class="feedback-item"><h3>News value</h3><p>Does it foreground what makes this story matter to the audience?</p></li>
             <li class="feedback-item"><h3>Style</h3><p>Does the wording fit the selected story type and intended publication?</p></li>
             <li class="feedback-item"><h3>Fairness and risk</h3><p>Could the wording overstate, mislead or create an avoidable risk?</p></li>
-          </ul>
-          <p class="empty-state">No headline has been checked yet.</p>
+          </div>
+          <p class="empty-state" id="feedback-empty-state">No headline has been checked yet.</p>
         </aside>
       </div>
     </section>
@@ -209,5 +252,6 @@
       </div>
     </div>
   </footer>
+  <script src="/headline-clinic.js" defer></script>
 </body>
 </html>

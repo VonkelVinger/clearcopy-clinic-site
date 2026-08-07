@@ -1,0 +1,16 @@
+{
+  "name": "clearcopy-clinic-headline-pilot-functions",
+  "private": true,
+  "main": "index.js",
+  "engines": {
+    "node": "22"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "emulators": "firebase emulators:start --only functions"
+  },
+  "dependencies": {
+    "firebase-functions": "^6.0.0",
+    "openai": "^7.4.0"
+  }
+}
