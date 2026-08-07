@@ -86,8 +86,11 @@
     input::placeholder, textarea::placeholder { color: #7a718f; }
     .button { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; padding: 0 18px; border: 0; border-radius: 999px; background: var(--brand); color: #fff; box-shadow: 0 10px 24px rgba(91, 62, 168, 0.2); cursor: pointer; font: inherit; font-weight: 600; transition: 0.2s ease; }
     .button:hover { background: var(--brand-dark); transform: translateY(-1px); }
-    .privacy-note { margin: 18px 0 0; padding: 14px 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface-soft); color: var(--muted); font-size: 0.94rem; }
-    .privacy-note strong { color: var(--text); }
+    .trust-note { margin: 0 0 26px; padding: 18px 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-soft); }
+    .trust-note h3 { margin: 0 0 8px; color: var(--brand-dark); font-size: 1.05rem; }
+    .trust-note p { margin: 0; color: var(--muted); font-size: 0.94rem; }
+    .trust-list { display: grid; gap: 8px; margin: 12px 0 0; padding-left: 20px; color: var(--muted); font-size: 0.94rem; }
+    .trust-list strong { color: var(--text); }
     .form-message { margin: 0 0 18px; padding: 12px 14px; border-radius: 14px; }
     .form-message[hidden] { display: none; }
     .form-error { border: 1px solid #c94d58; background: #fff1f2; color: #7d1d2a; }
@@ -122,6 +125,7 @@
     @media (max-width: 760px) {
       .workspace-grid { grid-template-columns: 1fr; }
       .intro-panel, .form-card, .feedback-card { padding: 28px 22px; }
+      .trust-note { padding: 16px; }
       .button { width: 100%; }
     }
 
@@ -162,6 +166,16 @@
         <div class="form-card">
           <h2>Bring your headline to the clinic</h2>
           <p class="card-intro">Add enough context to help you assess whether your proposed headline is accurate, clear and appropriate for the story.</p>
+
+          <section class="trust-note" aria-labelledby="before-submit-title">
+            <h3 id="before-submit-title">Before you submit</h3>
+            <p>Headline Clinic provides AI-assisted editorial coaching. It helps you assess a headline you have written; it does not write one for you.</p>
+            <ul class="trust-list">
+              <li><strong>Protect your sources.</strong> Submit only material you have the right or permission to use. Do not include confidential, embargoed, source-identifying, legally sensitive or otherwise restricted material; use a generalised summary instead.</li>
+              <li>Your story summary and headline are sent to an external AI provider only to produce the assessment you request. ClearCopy Clinic does not intentionally store this content in an application database for this pilot. External service providers may temporarily retain data under their own service and security policies.</li>
+              <li>If feedback says <strong>Human review required</strong>, ask an editor, lecturer, supervisor or other appropriate person to check the issue before publication.</li>
+            </ul>
+          </section>
 
           <form id="headline-form" novalidate>
             <div id="form-error" class="form-message form-error" role="alert" hidden></div>
@@ -209,13 +223,11 @@
 
             <button class="button" id="check-headline-button" type="submit">Check my headline</button>
           </form>
-
-          <p class="privacy-note"><strong>Protect your sources.</strong> Please do not paste confidential, identifying or unpublished source information at this stage. Use a generalised summary instead.</p>
         </div>
 
         <aside class="feedback-card" id="feedback-panel" aria-labelledby="feedback-title" aria-live="polite" aria-busy="false">
           <h2 id="feedback-title">Headline feedback</h2>
-          <p id="feedback-intro">Use these lenses to review your work. Feedback will appear here when headline checking is available.</p>
+          <p id="feedback-intro">Use these lenses to review your work. Feedback will appear here after you check a headline.</p>
           <div class="feedback-list" id="feedback-list">
             <li class="feedback-item"><h3>Accuracy</h3><p>Does the headline faithfully reflect what the story establishes?</p></li>
             <li class="feedback-item"><h3>Clarity</h3><p>Can a reader understand the headline quickly and without ambiguity?</p></li>
