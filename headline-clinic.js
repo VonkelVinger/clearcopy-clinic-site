@@ -95,6 +95,20 @@
       const diagnosis = document.createElement("p");
       diagnosis.textContent = item.diagnosis;
       row.append(category, diagnosis);
+      if (Array.isArray(item.storyEvidence) && item.storyEvidence.length) {
+        const evidence = document.createElement("section");
+        evidence.className = "story-evidence";
+        const evidenceHeading = document.createElement("h4");
+        evidenceHeading.textContent = "Evidence from your story";
+        const evidenceList = document.createElement("ul");
+        item.storyEvidence.forEach((evidenceText) => {
+          const evidenceItem = document.createElement("li");
+          evidenceItem.textContent = evidenceText;
+          evidenceList.appendChild(evidenceItem);
+        });
+        evidence.append(evidenceHeading, evidenceList);
+        row.appendChild(evidence);
+      }
       if (item.coachingQuestions.length) {
         const question = document.createElement("p");
         question.textContent = item.coachingQuestions.join(" ");
@@ -125,6 +139,16 @@
     feedbackList.replaceChildren();
     feedbackList.appendChild(renderAssessment(data.studentAssessment, "Your proposed headline"));
     if (data.publishedAssessment) feedbackList.appendChild(renderAssessment(data.publishedAssessment, "Published headline comparison"));
+    if (data.nextStep) {
+      const nextStep = document.createElement("section");
+      nextStep.className = "next-step";
+      const nextStepHeading = document.createElement("h3");
+      nextStepHeading.textContent = "Your next step";
+      const nextStepText = document.createElement("p");
+      nextStepText.textContent = data.nextStep;
+      nextStep.append(nextStepHeading, nextStepText);
+      feedbackList.appendChild(nextStep);
+    }
     feedbackIntro.textContent = "Your feedback is organised around the six Headline Clinic review categories.";
     emptyState.hidden = true;
   }
