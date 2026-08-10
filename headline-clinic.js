@@ -2,7 +2,7 @@
   "use strict";
 
   const API_URL = "https://us-central1-clear-copy-clinic.cloudfunctions.net/assessHeadline";
-  const REQUEST_TIMEOUT_MS = 25_000;
+  const REQUEST_TIMEOUT_MS = 50_000;
   const CATEGORIES = ["Accuracy", "Clarity", "Specificity", "News value", "Style", "Fairness and risk"];
   const RATINGS = new Set(["Strong", "Needs attention", "Serious problem"]);
 

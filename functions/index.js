@@ -4,6 +4,7 @@ const crypto = require("node:crypto");
 const OpenAI = require("openai");
 const { defineSecret } = require("firebase-functions/params");
 const { onRequest } = require("firebase-functions/v2/https");
+const logger = require("firebase-functions/logger");
 
 const ALLOWED_ORIGINS = new Set([
   "http://127.0.0.1:8080",
@@ -13,8 +14,8 @@ const ALLOWED_ORIGINS = new Set([
 const STORY_TYPES = new Set(["hard-news", "feature", "opinion", "community-journalism", "digital-social"]);
 const CATEGORIES = ["Accuracy", "Clarity", "Specificity", "News value", "Style", "Fairness and risk"];
 const RATINGS = new Set(["Strong", "Needs attention", "Serious problem"]);
-const PER_CODE_DAILY_LIMIT = 2;
-const TOTAL_DAILY_LIMIT = 10;
+const PER_CODE_DAILY_LIMIT = 6;
+const TOTAL_DAILY_LIMIT = 35;
 
 const OPENAI_API_KEY = defineSecret("OPENAI_API_KEY");
 const PILOT_ACCESS_CODES = defineSecret("PILOT_ACCESS_CODES");
@@ -110,6 +111,11 @@ function codeDigest(code, pepper) {
   return crypto.createHmac("sha256", pepper).update(code, "utf8").digest("hex");
 }
 
+function pilotCodeLabel(code) {
+  const match = /^H674-([A-E])-[A-Z0-9]{6}$/i.exec(code);
+  return match ? `H674-${match[1].toUpperCase()}` : null;
+}
+
 function safelyMatchesPilotCode(submittedDigest, configuredCodes, pepper) {
   const candidates = configuredCodes.split(",").map((code) => code.trim()).filter(Boolean);
   let matched = false;
@@ -171,7 +177,7 @@ async function requestAssessment(client, submission, digest) {
   try { return JSON.parse(completion.output_text); } catch { throw new Error("malformed-model-output"); }
 }
 
-function createAssessHeadlineHandler({ getSecrets, createClient, now = () => new Date() }) {
+function createAssessHeadlineHandler({ getSecrets, createClient, now = () => new Date(), log = logger }) {
   const dailyCounts = new Map();
   function rateLimitAvailable(digest) {
     const day = utcDay(now); const totalKey = `total:${day}`; const codeKey = `code:${day}:${digest}`;
@@ -184,6 +190,7 @@ function createAssessHeadlineHandler({ getSecrets, createClient, now = () => new
     dailyCounts.set(codeKey, (dailyCounts.get(codeKey) || 0) + 1);
   }
   async function handler(request, response) {
+    const requestStartedAt = Date.now();
     if (!setCors(request, response)) return sendJson(response, 403, { error: "This origin is not allowed." });
     if (request.method === "OPTIONS") return response.status(204).send("");
     if (request.method !== "POST") return sendJson(response, 405, { error: "Use POST for headline assessments." });
@@ -202,6 +209,11 @@ function createAssessHeadlineHandler({ getSecrets, createClient, now = () => new
     }
     if (!isValidResult(result, Boolean(submission.publishedHeadline))) return sendJson(response, 502, { error: "Headline Clinic returned an incomplete assessment. Please try again." });
     recordSuccessfulAssessment(digest);
+    log.info({
+      event: "headline_clinic_success",
+      codeId: pilotCodeLabel(submission.accessCode),
+      durationMs: Date.now() - requestStartedAt
+    });
     return sendJson(response, 200, result);
   }
   return { handler, resetState: () => dailyCounts.clear() };
@@ -212,5 +224,5 @@ const production = createAssessHeadlineHandler({
   createClient: (apiKey) => new OpenAI({ apiKey })
 });
 
-exports.assessHeadline = onRequest({ cors: false, maxInstances: 1, concurrency: 1, timeoutSeconds: 30, secrets: [OPENAI_API_KEY, PILOT_ACCESS_CODES, PILOT_ACCESS_PEPPER] }, production.handler);
-exports.__testables = { createAssessHeadlineHandler, isValidAssessment, isValidResult, codeDigest, ASSESSMENT_SCHEMA };
+exports.assessHeadline = onRequest({ cors: false, maxInstances: 1, concurrency: 5, timeoutSeconds: 45, secrets: [OPENAI_API_KEY, PILOT_ACCESS_CODES, PILOT_ACCESS_PEPPER] }, production.handler);
+exports.__testables = { createAssessHeadlineHandler, isValidAssessment, isValidResult, codeDigest, pilotCodeLabel, PER_CODE_DAILY_LIMIT, TOTAL_DAILY_LIMIT, ASSESSMENT_SCHEMA };

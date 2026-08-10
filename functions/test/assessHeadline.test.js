@@ -5,7 +5,7 @@ const assert = require("node:assert/strict");
 const { __testables } = require("../index.js");
 
 const validBody = {
-  accessCode: "PILOT-DEMO-01", storyType: "hard-news",
+  accessCode: "H674-A-ABC123", storyType: "hard-news",
   storySummary: "A council committee has recommended closing two public libraries because of budget pressures. The full council will vote on the proposal next month. Residents have started a petition opposing the closures.",
   proposedHeadline: "City closes libraries", publishedHeadline: "Committee recommends library closures"
 };
@@ -17,10 +17,10 @@ function fixture({ published = true, council = false } = {}) {
 }
 function request({ method = "POST", origin = "http://127.0.0.1:8080", body = validBody, headers = {} } = {}) { return { method, body, is: (type) => type === "application/json", get: (name) => ({ origin, ...headers }[name.toLowerCase()]) }; }
 function response() { return { headers: {}, statusCode: null, body: null, set(name, value) { this.headers[name] = value; return this; }, status(code) { this.statusCode = code; return this; }, json(body) { this.body = body; return this; }, send(body) { this.body = body; return this; } }; }
-function setup(output = fixture()) {
-  const calls = [];
-  const service = __testables.createAssessHeadlineHandler({ getSecrets: () => ({ openaiApiKey: "test-key", pilotAccessCodes: "PILOT-DEMO-01,SECOND-CODE", pilotAccessPepper: "test-pepper" }), createClient: () => ({ responses: { create: async (payload) => { calls.push(payload); return output instanceof Error ? Promise.reject(output) : { output_text: JSON.stringify(output) }; } } }) });
-  return { service, calls };
+function setup(output = fixture(), pilotAccessCodes = "H674-A-ABC123,SECOND-CODE") {
+  const calls = []; const logs = [];
+  const service = __testables.createAssessHeadlineHandler({ getSecrets: () => ({ openaiApiKey: "test-key", pilotAccessCodes, pilotAccessPepper: "test-pepper" }), createClient: () => ({ responses: { create: async (payload) => { calls.push(payload); return output instanceof Error ? Promise.reject(output) : { output_text: JSON.stringify(output) }; } } }), log: { info: (entry) => logs.push(entry) } });
+  return { service, calls, logs };
 }
 async function invoke(service, options) { const res = response(); await service.handler(request(options), res); return res; }
 
@@ -28,6 +28,9 @@ test("returns a live-shaped six-category assessment without a replacement headli
 test("assesses an optional published headline independently", async () => { const { service } = setup(); const res = await invoke(service); assert.equal(res.statusCode, 200); assert.equal(res.body.publishedAssessment.categories.length, 6); assert.notEqual(res.body.studentAssessment, res.body.publishedAssessment); });
 test("returns a Serious problem accuracy calibration for the council proposal", async () => { const { service } = setup(fixture({ council: true })); const res = await invoke(service); assert.equal(res.statusCode, 200); assert.equal(res.body.studentAssessment.categories[0].rating, "Serious problem"); });
 test("rejects invalid access codes and invalid input", async () => { let setupResult = setup(); let res = await invoke(setupResult.service, { body: { ...validBody, accessCode: "INVALID-01" } }); assert.equal(res.statusCode, 401); res = await invoke(setupResult.service, { body: { ...validBody, storySummary: "Too short" } }); assert.equal(res.statusCode, 400); res = await invoke(setupResult.service, { body: { ...validBody, proposedHeadline: "No" } }); assert.equal(res.statusCode, 400); });
-test("limits successful assessments without using a raw code as a key", async () => { const { service } = setup(); assert.equal((await invoke(service)).statusCode, 200); assert.equal((await invoke(service)).statusCode, 200); assert.equal((await invoke(service)).statusCode, 429); });
+test("uses the classroom pilot limits without using a raw code as a key", async () => { const { service } = setup(); assert.equal(__testables.PER_CODE_DAILY_LIMIT, 6); assert.equal(__testables.TOTAL_DAILY_LIMIT, 35); for (let attempt = 0; attempt < 6; attempt += 1) assert.equal((await invoke(service)).statusCode, 200); assert.equal((await invoke(service)).statusCode, 429); });
+test("caps successful assessments at the aggregate classroom limit", async () => { const codes = Array.from({ length: 36 }, (_, index) => `H674-A-${String(index + 1).padStart(6, "0")}`); const { service } = setup(fixture(), codes.join(",")); for (let index = 0; index < 35; index += 1) assert.equal((await invoke(service, { body: { ...validBody, accessCode: codes[index] } })).statusCode, 200); assert.equal((await invoke(service, { body: { ...validBody, accessCode: codes[35] } })).statusCode, 429); });
+test("extracts only anonymous classroom code labels", () => { assert.equal(__testables.pilotCodeLabel("H674-A-ABC123"), "H674-A"); assert.equal(__testables.pilotCodeLabel("h674-e-999xyz"), "H674-E"); assert.equal(__testables.pilotCodeLabel("PILOT-DEMO-01"), null); });
+test("logs successful use without access-code or submission-content leakage", async () => { const { service, logs } = setup(); const res = await invoke(service); assert.equal(res.statusCode, 200); assert.equal(logs.length, 1); assert.deepEqual(Object.keys(logs[0]).sort(), ["codeId", "durationMs", "event"]); assert.equal(logs[0].event, "headline_clinic_success"); assert.equal(logs[0].codeId, "H674-A"); assert.equal(typeof logs[0].durationMs, "number"); assert.ok(logs[0].durationMs >= 0); const logText = JSON.stringify(logs[0]); for (const sensitiveValue of [validBody.accessCode, validBody.storySummary, validBody.proposedHeadline, validBody.publishedHeadline]) assert.equal(logText.includes(sensitiveValue), false); });
 test("handles malformed model results and upstream timeout/failure", async () => { let setupResult = setup({ bad: true }); let res = await invoke(setupResult.service); assert.equal(res.statusCode, 502); setupResult = setup(Object.assign(new Error("timed out"), { code: "ETIMEDOUT" })); res = await invoke(setupResult.service); assert.equal(res.statusCode, 504); setupResult = setup(new Error("upstream")); res = await invoke(setupResult.service); assert.equal(res.statusCode, 502); });
 test("rejects unsupported origins, methods, and fields", async () => { const { service } = setup(); assert.equal((await invoke(service, { origin: "https://example.test" })).statusCode, 403); assert.equal((await invoke(service, { method: "GET" })).statusCode, 405); assert.equal((await invoke(service, { body: { ...validBody, unexpected: true } })).statusCode, 400); });
