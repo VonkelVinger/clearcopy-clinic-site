@@ -226,3 +226,4 @@ const production = createAssessHeadlineHandler({
 
 exports.assessHeadline = onRequest({ cors: false, maxInstances: 1, concurrency: 5, timeoutSeconds: 45, secrets: [OPENAI_API_KEY, PILOT_ACCESS_CODES, PILOT_ACCESS_PEPPER] }, production.handler);
 exports.__testables = { createAssessHeadlineHandler, isValidAssessment, isValidResult, codeDigest, pilotCodeLabel, PER_CODE_DAILY_LIMIT, TOTAL_DAILY_LIMIT, ASSESSMENT_SCHEMA };
+exports.afrikaansPreflight = require("./preflight").afrikaansPreflight;
