@@ -2,7 +2,7 @@
   "use strict";
 
   const API_URL = "https://us-central1-clear-copy-clinic.cloudfunctions.net/assessArticle";
-  const REQUEST_TIMEOUT_MS = 65000;
+  const REQUEST_TIMEOUT_MS = 125000;
 
   const form = document.getElementById("article-form");
   const button = document.getElementById("review-button");

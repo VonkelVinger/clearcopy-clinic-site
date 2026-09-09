@@ -321,7 +321,7 @@ exports.assessArticle = onRequest({
   cors: false,
   maxInstances: 1,
   concurrency: 5,
-  timeoutSeconds: 60,
+  timeoutSeconds: 120,
   secrets: [OPENAI_API_KEY, PILOT_ACCESS_CODES, PILOT_ACCESS_PEPPER]
 }, production.handler);
 
