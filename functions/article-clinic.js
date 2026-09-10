@@ -76,7 +76,7 @@ const ASSESSMENT_SCHEMA = {
   required: [
     "version", "mode", "overview", "strengths", "priorities",
     "openingHeadline", "sourcesEvidenceQuotes", "endingConclusion",
-    "copyEdits", "quickPlan", "warnings"
+    "copyEdits", "warnings"
   ],
   properties: {
     version: { type: "string", enum: ["article-pilot-v1"] },
@@ -88,10 +88,6 @@ const ASSESSMENT_SCHEMA = {
     sourcesEvidenceQuotes: FOCUS,
     endingConclusion: FOCUS,
     copyEdits: { type: "array", minItems: 0, maxItems: 8, items: FINDING },
-    quickPlan: {
-      type: "array", minItems: 2, maxItems: 5,
-      items: { type: "string", minLength: 1, maxLength: 300 }
-    },
     warnings: { type: "array", minItems: 0, maxItems: 3, items: WARNING }
   }
 };
@@ -175,6 +171,10 @@ function dayKey(now) {
   return now().toISOString().slice(0, 10);
 }
 
+function buildQuickPlan(priorities) {
+  return priorities.slice(0, 5).map((priority) => priority.action.trim());
+}
+
 function assessmentInstructions() {
   return `You are Article Clinic, an editorial coaching tool for serious article writing.
 
@@ -207,6 +207,8 @@ Integrity rules:
 - Use "Check carefully" for ordinary but meaningful verification or reporting concerns.
 - If a diagnostic area is not very relevant to the selected article type, say so briefly rather than inventing a problem.
 - For copy-editing, identify concrete problems from the article rather than generic advice.
+
+Every text field must contain polished final user-facing prose only, with no internal notes, drafting comments, process commentary, schema commentary, chain-of-thought, or unfinished fragments.
 
 Return the required JSON only.`;
 }
@@ -241,7 +243,11 @@ async function requestAssessment(client, submission, digest) {
   });
 
   if (!completion.output_text) throw new Error("malformed-model-output");
-  try { return JSON.parse(completion.output_text); }
+  try {
+    const result = JSON.parse(completion.output_text);
+    result.quickPlan = buildQuickPlan(result.priorities);
+    return result;
+  }
   catch { throw new Error("malformed-model-output"); }
 }
 
@@ -325,4 +331,4 @@ exports.assessArticle = onRequest({
   secrets: [OPENAI_API_KEY, PILOT_ACCESS_CODES, PILOT_ACCESS_PEPPER]
 }, production.handler);
 
-exports.__testables = { validateSubmission, createArticleHandler, ASSESSMENT_SCHEMA };
+exports.__testables = { validateSubmission, createArticleHandler, ASSESSMENT_SCHEMA, buildQuickPlan };
