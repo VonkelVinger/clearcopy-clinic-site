@@ -49,6 +49,7 @@
     label{display:block;margin-bottom:8px;font-size:.94rem;font-weight:800}
     .hint{display:block;margin:0 0 8px;color:var(--muted);font-size:.88rem;font-weight:400}
     label .hint{display:inline;margin:0 0 0 4px}
+    .access-link{color:var(--coral-dark);text-decoration:underline;text-underline-offset:3px}
     input,select,textarea{width:100%;min-width:0;border:1px solid #818b8f;border-radius:0;background:#fff;
       color:var(--ink);font:inherit;line-height:1.6;padding:12px 14px}
     input::placeholder,textarea::placeholder{color:var(--muted);opacity:1}
@@ -143,6 +144,7 @@
           <div id="form-status" class="message status" role="status" aria-live="polite" hidden></div>
           <div class="form-field">
             <label for="pilot-access-code">Pilot access code</label>
+            <p class="hint"><strong>Article Clinic is currently a limited pilot.</strong> If you were invited to test it, enter the access code you received. Don’t have a code? <a class="access-link" href="mailto:hello@clearcopy.clinic?subject=Article%20Clinic%20access"><strong>Request access.</strong></a></p>
             <input id="pilot-access-code" type="password" autocomplete="one-time-code" minlength="8" maxlength="32" required />
             <span class="field-error" id="pilot-access-code-error" hidden></span>
           </div>
