@@ -6,72 +6,120 @@
   <title>Article Clinic | ClearCopy Clinic</title>
   <meta name="description" content="AI-assisted editorial coaching for article writers from ClearCopy Clinic." />
   <style>
-    :root{--surface:#fff;--soft:#f1edf8;--text:#1c1630;--muted:#5f5876;--line:#ddd6ee;
-      --brand:#5b3ea8;--dark:#452d82;--accent:#8f77d8;--warning:#a36a17;--max:1180px;
-      --radius:18px;--shadow:0 12px 32px rgba(46,28,87,.08)}
-    *{box-sizing:border-box} body{margin:0;font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif;
-      background:linear-gradient(180deg,#faf8ff 0%,#f4f1fb 100%);color:var(--text);line-height:1.6}
-    a{color:inherit;text-decoration:none}.container{width:min(var(--max),calc(100% - 32px));margin:auto}
-    :focus-visible{outline:3px solid rgba(143,119,216,.55);outline-offset:3px}
-    .site-header{position:sticky;top:0;z-index:20;background:rgba(250,248,255,.92);
-      backdrop-filter:blur(10px);border-bottom:1px solid rgba(221,214,238,.7)}
-    .header-inner{min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .brand{display:inline-flex;align-items:center;gap:12px;color:var(--dark);font-size:1.25rem;font-weight:800}
-    .brand-mark{width:48px;height:48px;display:grid;place-items:center;border-radius:12px;
-      background:linear-gradient(135deg,var(--brand),var(--accent));color:#fff}
-    .back-link{color:var(--muted);font-weight:600}.page-intro{padding:52px 0 26px}
-    .panel,.form-card,.feedback-card{background:var(--surface);border:1px solid rgba(221,214,238,.8);
-      border-radius:28px;box-shadow:var(--shadow)}
-    .panel{padding:40px;background:radial-gradient(circle at top right,rgba(143,119,216,.13),transparent 34%),#fff}
-    .eyebrow{display:inline-flex;margin-bottom:16px;padding:8px 12px;border-radius:999px;
-      background:var(--soft);color:var(--dark);font-size:.9rem;font-weight:700}
-    h1{margin:0 0 12px;font-size:clamp(2.1rem,4.2vw,3.5rem);line-height:1.08}
-    .panel p{max-width:72ch;margin:0;color:var(--muted);font-size:1.06rem}
-    .workspace{padding:0 0 72px}.workspace-grid{display:grid;
-      grid-template-columns:minmax(0,1.05fr) minmax(340px,.95fr);gap:28px;align-items:start}
-    .form-card,.feedback-card{padding:30px}h2{margin:0 0 8px;font-size:1.45rem}
-    .card-intro{margin:0 0 24px;color:var(--muted)}.trust-note{margin:0 0 26px;padding:18px 20px;
-      border:1px solid var(--line);border-radius:var(--radius);background:var(--soft)}
-    .trust-note h3{margin:0 0 8px;color:var(--dark);font-size:1.05rem}
-    .trust-note p,.trust-note li{color:var(--muted);font-size:.94rem}.trust-note ul{margin-bottom:0}
-    .form-field{margin-bottom:20px}label{display:block;margin-bottom:8px;font-weight:700}
-    .hint{display:block;margin:-2px 0 8px;color:var(--muted);font-size:.92rem}
-    input,select,textarea{width:100%;border:1px solid var(--line);border-radius:12px;background:#fff;
-      color:var(--text);font:inherit;line-height:1.5;padding:13px 14px}
-    textarea{min-height:150px;resize:vertical}#article-text{min-height:420px}
-    .word-count{margin-top:7px;color:var(--muted);font-size:.9rem;text-align:right}
-    .button{display:inline-flex;min-height:48px;align-items:center;justify-content:center;padding:0 18px;
-      border:0;border-radius:999px;background:var(--brand);color:#fff;cursor:pointer;font:inherit;font-weight:700}
-    .button:hover{background:var(--dark)}.button:disabled{cursor:wait;opacity:.72}
-    .message{margin:0 0 18px;padding:12px 14px;border-radius:14px}.message[hidden],.field-error[hidden]{display:none}
-    .error{border:1px solid #c94d58;background:#fff1f2;color:#7d1d2a}
-    .status{border:1px solid var(--line);background:var(--soft);color:var(--dark)}
-    .field-error{display:block;margin-top:7px;color:#9b2434;font-size:.9rem}.has-error{border-color:#c94d58}
-    .feedback-section{margin-top:24px}.feedback-section:first-child{margin-top:0}
-    .feedback-section h3{margin:0 0 10px;color:var(--dark)}
-    .feedback-list{display:grid;gap:12px;margin:0;padding:0;list-style:none}
-    .feedback-item{padding:16px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
-    .feedback-item h4{margin:0 0 5px;font-size:1rem}.feedback-item p{margin:7px 0 0;color:var(--muted);font-size:.94rem}
-    .evidence{margin-top:10px;padding:10px 12px;border-radius:12px;background:var(--soft);color:var(--muted);font-size:.9rem}
-    .warning{margin-top:12px;padding:13px 15px;border:1px solid var(--warning);border-left-width:5px;
-      border-radius:12px;background:#fff8e8}.warning strong{color:#6c4308}
-    .empty{margin:20px 0 0;padding:14px 16px;border-radius:14px;background:var(--soft);color:var(--dark);font-size:.94rem}
-    .site-footer{padding:0 0 34px;color:var(--muted);font-size:.95rem}.footer-inner{padding-top:18px;border-top:1px solid var(--line)}
-    @media(max-width:820px){.workspace-grid{grid-template-columns:1fr}.panel,.form-card,.feedback-card{padding:26px 22px}
-      .button{width:100%}.site-header{position:static}}
+    :root{
+      --ivory:#fff8f3;--paper:#fffdfa;--peach:#f8e8df;--ink:#1f2933;--muted:#5f686f;
+      --coral:#ef5b3d;--coral-dark:#b83e29;--teal:#2f6c6b;--teal-soft:#dceceb;
+      --stone:#e5dbd3;--max:1200px;--shadow:0 18px 42px rgba(31,41,51,.08)
+    }
+    *{box-sizing:border-box}
+    html{scroll-padding-top:96px}
+    body{margin:0;background:var(--ivory);color:var(--ink);font:400 16px/1.6 Inter,"Segoe UI",Arial,sans-serif}
+    a{color:inherit;text-decoration:none}
+    .container{width:min(var(--max),calc(100% - 40px));margin:auto}
+    :focus-visible{outline:3px solid var(--ink);outline-offset:4px}
+    .site-header{position:sticky;top:0;z-index:20;background:rgba(255,248,243,.94);
+      backdrop-filter:blur(12px);border-bottom:1px solid var(--stone)}
+    .header-inner{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:26px}
+    .brand{display:inline-flex;align-items:center;gap:10px;font-size:.98rem;font-weight:900;letter-spacing:.07em;white-space:nowrap}
+    .brand em,.footer-brand em{font-style:normal;color:var(--coral)}
+    .tool-nav{display:flex;align-items:center;gap:22px;font-size:.88rem;font-weight:800}
+    .tool-nav a,.footer-link{display:inline-flex;align-items:center;min-height:44px}
+    .tool-nav a:hover,.footer-link:hover{color:var(--coral-dark)}
+    .page-intro{padding:48px 0 36px}
+    .panel{max-width:900px}
+    .eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:18px;color:var(--teal);
+      font-size:.74rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+    .eyebrow::before{content:"";width:25px;flex-shrink:0;border-top:2px solid var(--coral)}
+    h1{margin:0 0 18px;font-size:clamp(2.7rem,5.5vw,4.5rem);line-height:1;letter-spacing:-.055em}
+    .panel p{max-width:78ch;margin:0;color:var(--muted);font-size:1.06rem}
+    .workspace{padding:0 0 72px}
+    .workspace-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(340px,.95fr);gap:24px;align-items:start}
+    .workspace-grid>*{min-width:0}
+    .form-card,.feedback-card{padding:30px;border:1px solid var(--stone);box-shadow:var(--shadow)}
+    .form-card{background:var(--paper);border-top:3px solid var(--coral)}
+    .feedback-card{background:#edf4f2;border-color:#c6d9d5;border-top:3px solid var(--teal);overflow-wrap:anywhere}
+    h2{margin:0 0 12px;font-size:1.65rem;line-height:1.12;letter-spacing:-.035em}
+    .card-intro{margin:0 0 26px;color:var(--muted);font-size:.96rem}
+    .trust-note{margin:0 0 30px;padding:18px 20px;border-left:3px solid var(--teal);background:#edf4f2}
+    .trust-note h3{margin:0 0 8px;color:var(--teal);font-size:1rem}
+    .trust-note p,.trust-note li{color:var(--muted);font-size:.9rem}
+    .trust-note p{margin:0 0 10px}.trust-note ul{margin:0;padding-left:18px}
+    .trust-note li+li{margin-top:8px}.trust-note strong{color:var(--ink)}
+    .form-field{margin-bottom:24px}
+    label{display:block;margin-bottom:8px;font-size:.94rem;font-weight:800}
+    .hint{display:block;margin:0 0 8px;color:var(--muted);font-size:.88rem;font-weight:400}
+    label .hint{display:inline;margin:0 0 0 4px}
+    input,select,textarea{width:100%;min-width:0;border:1px solid #818b8f;border-radius:0;background:#fff;
+      color:var(--ink);font:inherit;line-height:1.6;padding:12px 14px}
+    input::placeholder,textarea::placeholder{color:var(--muted);opacity:1}
+    input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-color:var(--teal)}
+    textarea{display:block;min-height:150px;resize:vertical}#article-text{min-height:420px;line-height:1.75}
+    .word-count{margin-top:8px;color:var(--muted);font-size:.85rem;text-align:right;font-variant-numeric:tabular-nums}
+    .button{display:inline-flex;min-height:48px;align-items:center;justify-content:center;padding:10px 19px;
+      border:1px solid var(--coral-dark);border-radius:0;background:var(--coral-dark);color:#fff;cursor:pointer;font:inherit;font-weight:850;
+      transition:background .16s ease}
+    .button:hover{background:#ae3925;border-color:#ae3925}
+    .button:disabled{cursor:wait;background:#76544c;border-color:#76544c}
+    .message{margin:0 0 20px;padding:14px 16px;font-size:.94rem;overflow-wrap:anywhere}
+    [hidden]{display:none!important}
+    .error{border:1px solid #b83e29;border-left-width:4px;background:#fff0ea;color:#8b2e1e}
+    .status{border:1px solid var(--teal);border-left-width:4px;background:var(--teal-soft);color:#245655}
+    .field-error{display:block;margin-top:8px;color:#a33322;font-size:.9rem;font-weight:600}
+    .has-error{border:2px solid #b83e29}
+    .feedback-section{margin-top:30px;padding-top:24px;border-top:1px solid #bdcfcb}
+    .feedback-section:first-child{margin-top:0;padding-top:0;border-top:0}
+    .feedback-section h3{margin:0 0 14px;color:var(--teal);font-size:1.15rem;line-height:1.25;letter-spacing:-.02em}
+    .feedback-section>p{margin:0;color:var(--ink)}
+    .feedback-list{display:grid;gap:0;margin:0;padding:0;list-style:none}
+    .feedback-item{padding:16px 0;border-bottom:1px solid #c6d9d5}
+    .feedback-item:first-child{padding-top:0}.feedback-item:last-child{padding-bottom:0;border-bottom:0}
+    .feedback-item h4{margin:0 0 6px;font-size:1rem;line-height:1.4}
+    .feedback-item p{margin:8px 0 0;color:var(--muted);font-size:.94rem}
+    /* The existing renderer always places revision priorities third. */
+    #feedback-content>.feedback-section:nth-child(3){padding:22px 20px;background:var(--paper);border:1px solid var(--stone);border-left:3px solid var(--coral)}
+    #feedback-content>.feedback-section:nth-child(3) h3{color:var(--coral-dark);font-size:1.3rem}
+    .evidence{margin-top:12px;padding:10px 14px;border-left:2px solid #8daaa4;background:#e3ece9;color:#52635f;font-size:.88rem}
+    .warning{margin-top:12px;padding:15px 17px;border:1px solid #a57932;border-left-width:4px;background:#fff3d8}
+    .warning strong{color:#704b15}.warning p{margin:8px 0 0;color:#594b36;font-size:.94rem}
+    .feedback-section ol{margin:0;padding-left:24px}.feedback-section ol li+li{margin-top:10px}
+    .feedback-section ol li::marker{color:var(--teal);font-weight:800}
+    .empty{margin:26px 0 0;padding:20px 0 0;border-top:1px solid #bdcfcb;color:var(--teal);font-size:1.04rem;font-weight:600;line-height:1.65}
+    .site-footer{padding:0 0 30px;color:var(--muted);font-size:.88rem}
+    .footer-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:22px;border-top:1px solid var(--stone)}
+    .footer-brand{font-weight:900;letter-spacing:.06em;color:var(--ink)}
+    .footer-inner p{margin:6px 0 0}.footer-link{font-weight:800}
+    @media(max-width:980px){.form-card,.feedback-card{padding:26px 22px}.workspace-grid{gap:18px}}
+    @media(max-width:820px){
+      .workspace-grid{grid-template-columns:1fr}.button{width:100%}
+      .site-header{position:static}html{scroll-padding-top:16px}
+    }
+    @media(max-width:600px){
+      .container{width:calc(100% - 28px)}
+      .header-inner{padding:16px 0;align-items:flex-start;flex-direction:column;gap:8px}
+      .brand{white-space:normal}.tool-nav{flex-wrap:wrap;gap:8px 24px}
+      .page-intro{padding:32px 0 28px}.eyebrow{font-size:.66rem;letter-spacing:.1em}
+      .panel p{font-size:1rem}.form-card,.feedback-card{padding:24px 18px}
+      .trust-note{padding:16px}.workspace{padding-bottom:48px}
+      .footer-inner{align-items:flex-start;flex-direction:column;gap:10px}
+      #feedback-content>.feedback-section:nth-child(3){padding:18px 14px}
+    }
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
   </style>
 </head>
 <body>
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href="/" aria-label="ClearCopy Clinic home"><span class="brand-mark">CC</span><span>ClearCopy Clinic</span></a>
-    <a class="back-link" href="/">Back to home</a>
+    <a class="brand" href="/" aria-label="Clear Copy Clinic home">CLEAR COPY <em>CLINIC</em></a>
+    <nav class="tool-nav" aria-label="Tool navigation">
+      <a href="/#use-our-tools">Use our tools</a>
+      <a class="back-link" href="/">Back to home</a>
+    </nav>
   </div>
 </header>
 <main>
   <section class="page-intro" aria-labelledby="page-title">
     <div class="container"><div class="panel">
-      <div class="eyebrow">A guided revision space for article writers</div>
+      <div class="eyebrow">CCC / ARTICLE CLINIC &middot; LIVE PILOT</div>
       <h1 id="page-title">Article Clinic</h1>
       <p>Bring an article you have written. The Clinic will identify what is already working, the few changes that matter most, and the questions worth answering before you revise. It coaches; it does not rewrite the article for you.</p>
     </div></div>
@@ -147,7 +195,12 @@
     </div>
   </section>
 </main>
-<footer class="site-footer"><div class="container footer-inner">ClearCopy Clinic · AI-assisted review, not AI authorship.</div></footer>
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div><div class="footer-brand">CLEAR COPY <em>CLINIC</em></div><p>AI-assisted review, not AI authorship.</p></div>
+    <a class="footer-link" href="/#use-our-tools">Use our tools <span aria-hidden="true">&nbsp;&rarr;</span></a>
+  </div>
+</footer>
 <script src="/article-clinic.js" defer></script>
 </body>
 </html>
