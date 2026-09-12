@@ -18,13 +18,17 @@
 .card{border-top:3px solid var(--coral);overflow-wrap:anywhere}.progress-top{flex-wrap:wrap}.button{border-color:var(--coral-dark)}
 @media(max-width:620px){.header-inner{padding:16px 0;align-items:flex-start;flex-direction:column;gap:8px}.tool-nav{gap:20px}.diagnostic-view{padding:0 18px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important}}
+.share-assessment{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:18px}
+.share-assessment .button{font-size:.88rem;font-weight:700;padding:8px 14px}
+.share-assessment .button:hover{background:var(--peach)}
+.share-status{color:var(--muted);font-size:.88rem}
 </style>
 </head>
 <body>
 <a class="skip" href="#assessment">Skip to assessment</a>
 <header class="site-header"><div class="container header-inner"><a class="brand" href="/" aria-label="Clear Copy Clinic home">CLEAR COPY <em>CLINIC</em></a><nav class="tool-nav" aria-label="Project navigation"><a href="/#work-with-us">Work with us</a><a href="/">Back to home</a></nav></div></header>
-<main><section class="hero"><div class="container"><p class="eyebrow">Book project assessment</p><h1>Could your idea become a book?</h1><p class="intro">Perhaps it is still only an idea — or perhaps you already have notes, research, a partial or complete manuscript, a project previously rejected, or an existing publication you want to develop differently. This short assessment helps us get an initial sense of the project.</p><p class="trust">Free initial assessment · Confidential · No obligation · No payment required</p><p class="intro" style="font-size:.95rem;margin-top:18px">This is an initial project-potential assessment, not a publishing offer or a prediction of sales.</p></div></section>
+<main><section class="hero"><div class="container"><p class="eyebrow">Book project assessment</p><h1>Could your idea become a book?</h1><p class="intro">Perhaps it is still only an idea — or perhaps you already have notes, research, a partial or complete manuscript, a project previously rejected, or an existing publication you want to develop differently. This short assessment helps us get an initial sense of the project.</p><p class="trust">Free initial assessment · Confidential · No obligation · No payment required</p><div class="share-assessment" id="share-assessment" hidden><button class="button secondary" id="share-assessment-button" type="button">Share this assessment</button><span class="share-status" id="share-assessment-status" role="status" aria-live="polite"></span></div><p class="intro" style="font-size:.95rem;margin-top:18px">This is an initial project-potential assessment, not a publishing offer or a prediction of sales.</p></div></section>
 <section class="assessment" id="assessment"><div class="container"><div class="card"><div id="app"></div></div></div></section></main>
-<script src="/book.js?v=20260912-3" defer></script>
+<script src="/book.js?v=20260912-4" defer></script>
 </body>
 </html>

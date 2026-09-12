@@ -190,3 +190,51 @@ function results(){
 }
 function contact(event){event.preventDefault();const f=event.currentTarget;if(!f.checkValidity()){$("#contact-error").hidden=false;return}const body=`Book project enquiry\n\nName: ${$("#name").value}\nEmail: ${$("#email").value}\nCountry: ${$("#country").value}\nPreferred language: ${$("#preferred-language").value}\nPhone/WhatsApp: ${$("#phone").value}\n\nProject stage: ${model.project_stage}\nPublication type: ${model.publication_type}\nPublication language: ${model.publication_language}\nConcept: ${model.concept_summary}\nIntended readers: ${model.audience_types.join("; ")}\nGeographic reach: ${model.geographic_market}\nMaterial volume: ${model.material_volume}\nDevelopment needs: ${model.development_needs.join("; ")}\nSuccess goals: ${model.success_goal.join("; ")}\n\nInitial qualitative diagnosis:\n${Object.values(model.diagnostic_view).map(d=>`${d.name}: ${d.state}`).join("\n")}\n\nNote: ${$("#note").value}`;window.location.href=`mailto:hello@clearcopy.clinic?subject=${encodeURIComponent("Book project initial enquiry")}&body=${encodeURIComponent(body)}`;}
 render(false);
+
+// Share only the public page, never answers or contact details.
+function setupAssessmentSharing(){
+  const button=document.getElementById("share-assessment-button");
+  const status=document.getElementById("share-assessment-status");
+  if(!button||!status)return;
+  const url="https://clearcopy.clinic/book.html";
+  let statusTimer;
+  function showStatus(message){
+    window.clearTimeout(statusTimer);
+    status.textContent=message;
+    statusTimer=window.setTimeout(()=>{status.textContent="";},5000);
+  }
+  function copyWithTextarea(){
+    const previousFocus=document.activeElement;
+    const field=document.createElement("textarea");
+    field.value=url;field.readOnly=true;
+    field.setAttribute("aria-label","Assessment link for copying");
+    field.style.cssText="position:fixed;left:-9999px;top:0";
+    document.body.appendChild(field);
+    try{
+      field.select();
+      if(!document.execCommand("copy"))throw new Error("Copy unavailable");
+    }finally{
+      field.remove();previousFocus?.focus({preventScroll:true});
+    }
+  }
+  button.addEventListener("click",async()=>{
+    button.disabled=true;
+    window.clearTimeout(statusTimer);status.textContent="";
+    try{
+      if(typeof navigator.share==="function"){
+        try{
+          await navigator.share({title:"Could your idea become a book?",text:"Have an idea for a book? This free Clear Copy Clinic assessment helps you work out what stage the project is at and what might need to happen next.",url});
+          return;
+        }catch(error){if(error.name==="AbortError")return;}
+      }
+      try{
+        if(!navigator.clipboard?.writeText)throw new Error("Clipboard unavailable");
+        await navigator.clipboard.writeText(url);
+      }catch{copyWithTextarea();}
+      showStatus("Link copied.");
+    }catch{showStatus(`Please copy this link: ${url}`);}
+    finally{button.disabled=false;}
+  });
+  document.getElementById("share-assessment").hidden=false;
+}
+setupAssessmentSharing();
