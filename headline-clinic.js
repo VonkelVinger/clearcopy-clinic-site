@@ -14,6 +14,15 @@
   const feedbackIntro = document.getElementById("feedback-intro");
   const feedbackList = document.getElementById("feedback-list");
   const emptyState = document.getElementById("feedback-empty-state");
+  const elapsed = document.getElementById("review-elapsed");
+  const reportActions = document.getElementById("report-actions");
+  const reportMetadata = document.getElementById("report-metadata");
+  const printButton = document.getElementById("print-notes");
+  const copyButton = document.getElementById("copy-notes");
+  const copyStatus = document.getElementById("copy-status");
+  let elapsedTimer = null;
+  let copyResetTimer = null;
+  let reportVersion = 0;
   let isSubmitting = false;
 
   function setMessage(element, message) {
@@ -33,7 +42,8 @@
   }
 
   function addFieldError(field, message) {
-    const error = document.getElementById(`${field.id}-error`);
+    const errorId = field.id === "pilot-access-code" ? "access-code-error" : `${field.id}-error`;
+    const error = document.getElementById(errorId);
     field.classList.add("has-error");
     field.setAttribute("aria-invalid", "true");
     if (error) {
@@ -90,6 +100,7 @@
     assessment.categories.forEach((item) => {
       const row = document.createElement("li");
       row.className = "feedback-item";
+      row.setAttribute("data-rating", item.rating);
       const category = document.createElement("h3");
       category.textContent = `${item.category}: ${item.rating}`;
       const diagnosis = document.createElement("p");
@@ -153,6 +164,118 @@
     emptyState.hidden = true;
   }
 
+  function stopProgress() {
+    window.clearInterval(elapsedTimer);
+    elapsedTimer = null;
+    elapsed.textContent = "";
+    elapsed.hidden = true;
+  }
+
+  function startProgress() {
+    stopProgress();
+    const started = performance.now();
+    const tick = () => {
+      const seconds = Math.floor((performance.now() - started) / 1000);
+      elapsed.textContent = `Elapsed: ${seconds} ${seconds === 1 ? "second" : "seconds"}`;
+    };
+    tick();
+    elapsed.hidden = false;
+    elapsedTimer = window.setInterval(tick, 1000);
+  }
+
+  function resetReport() {
+    reportVersion += 1;
+    reportActions.hidden = true;
+    reportMetadata.hidden = true;
+    reportMetadata.replaceChildren();
+    feedbackPanel.classList.remove("report-ready");
+    window.clearTimeout(copyResetTimer);
+    copyButton.textContent = "Copy all feedback";
+    copyButton.disabled = false;
+    copyStatus.textContent = "";
+  }
+
+  function completeReport(metadata) {
+    // Only these report fields are retained; never the access code or story summary.
+    for (const [label, value] of metadata) {
+      if (!value) continue;
+      const row = document.createElement("div");
+      const term = document.createElement("dt"); term.textContent = label;
+      const description = document.createElement("dd"); description.textContent = value;
+      row.append(term, description); reportMetadata.appendChild(row);
+    }
+    reportMetadata.hidden = false;
+    reportActions.hidden = false;
+    feedbackPanel.classList.add("report-ready");
+  }
+
+  function reportText() {
+    const lines = ["Clear Copy Clinic \u2014 Headline Clinic", ""];
+    for (const row of reportMetadata.children) {
+      lines.push(`${row.children[0].textContent}: ${row.children[1].textContent}`);
+    }
+    // Walk only the rendered report, never the form or page text.
+    const walk = (node) => {
+      if (/^H[34]$/.test(node.tagName)) lines.push("", node.textContent);
+      else if (node.classList.contains("evidence")) lines.push(`Evidence: ${node.textContent}`);
+      else if (node.tagName === "LI" && !node.children.length) lines.push(`- ${node.textContent}`);
+      else if (node.tagName === "P" || node.tagName === "STRONG") lines.push(node.textContent);
+      else if (node.tagName === "OL") {
+        Array.from(node.children).forEach((item, i) => lines.push(`${i + 1}. ${item.textContent}`));
+      } else Array.from(node.children).forEach(walk);
+    };
+    Array.from(feedbackList.children).forEach(walk);
+    lines.push("", "Clear Copy Clinic \u00b7 AI-assisted review, not AI authorship.");
+    return lines.join("\n");
+  }
+
+  function fallbackCopy(text) {
+    const previousFocus = document.activeElement;
+    const field = document.createElement("textarea");
+    field.value = text;
+    field.setAttribute("readonly", "");
+    field.setAttribute("aria-label", "Coaching report for copying");
+    field.style.cssText = "position:fixed;left:-9999px;top:0";
+    document.body.appendChild(field);
+    try {
+      field.select();
+      if (!document.execCommand("copy")) throw new Error("Copy unavailable");
+    } finally {
+      field.remove();
+      previousFocus?.focus({ preventScroll: true });
+    }
+  }
+
+  async function copyReport() {
+    if (reportActions.hidden || isSubmitting) return;
+    const version = reportVersion;
+    const text = reportText();
+    copyButton.disabled = true;
+    window.clearTimeout(copyResetTimer);
+    try {
+      try {
+        if (!navigator.clipboard?.writeText) throw new Error("Clipboard unavailable");
+        await navigator.clipboard.writeText(text);
+      } catch {
+        if (version !== reportVersion) return;
+        fallbackCopy(text);
+      }
+      if (version !== reportVersion) return;
+      copyButton.textContent = "Copied";
+      copyStatus.textContent = "Copied";
+    } catch {
+      if (version === reportVersion) copyStatus.textContent = "Copy was unavailable. Please select and copy the headline feedback manually.";
+    } finally {
+      if (version === reportVersion) {
+        copyButton.disabled = false;
+        copyResetTimer = window.setTimeout(() => {
+          copyButton.textContent = "Copy all feedback";
+          copyStatus.textContent = "";
+        }, 4000);
+      }
+    }
+  }
+
   async function submit(event) {
     event.preventDefault();
     if (isSubmitting) return;
@@ -160,6 +283,7 @@
     clearFieldErrors();
     setMessage(formError, "");
     setMessage(formStatus, "");
+    resetReport();
     const values = readValues();
     const errors = validate(values);
     if (errors.length) {
@@ -173,7 +297,14 @@
     button.disabled = true;
     button.textContent = "Checking…";
     feedbackPanel.setAttribute("aria-busy", "true");
-    setMessage(formStatus, "Checking your headline. Please wait.");
+    setMessage(formStatus, "Checking your headline\u2026");
+    startProgress();
+    const metadata = [
+      ["Review date", new Date().toLocaleString(undefined, { dateStyle: "long", timeStyle: "short" })],
+      ["Story type", document.getElementById("story-type").selectedOptions[0].textContent.trim()],
+      ["Proposed headline", values.proposedHeadline],
+      ["Published headline", values.publishedHeadline]
+    ];
     const controller = new AbortController();
     const timeout = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
     let completed = false;
@@ -197,9 +328,11 @@
         throw new Error(messages[response.status] || "Headline Clinic is temporarily unavailable. Please try again shortly.");
       }
       renderFeedback(body);
-      setMessage(formStatus, "Feedback is ready. Review the coaching questions before revising your headline.");
+      completeReport(metadata);
+      setMessage(formStatus, "Your headline feedback is ready. Work through the coaching questions and revise the headline yourself. You can run another check afterwards if you want a second look.");
       completed = true;
     } catch (error) {
+      resetReport();
       const message = error.name === "AbortError"
         ? "The check took too long. No submission was saved; please try again."
         : error.message === "invalid-response"
@@ -208,6 +341,7 @@
       setMessage(formError, message || "Headline Clinic is temporarily unavailable. Please try again shortly.");
       setMessage(formStatus, "");
     } finally {
+      stopProgress();
       window.clearTimeout(timeout);
       isSubmitting = false;
       button.disabled = false;
@@ -217,5 +351,9 @@
     }
   }
 
+  printButton.addEventListener("click", () => {
+    if (!reportActions.hidden && !isSubmitting) window.print();
+  });
+  copyButton.addEventListener("click", copyReport);
   form.addEventListener("submit", submit);
 })();
