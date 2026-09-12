@@ -6,54 +6,104 @@
   <title>Afrikaans Preflight | ClearCopy Clinic</title>
   <meta name="description" content="Protected ClearCopy Clinic tool for conservative mechanical cleanup of Afrikaans Word documents." />
   <style>
-    :root { --surface:#fff; --soft:#f1edf8; --text:#1c1630; --muted:#5f5876; --line:#ddd6ee; --brand:#5b3ea8; --dark:#452d82; --accent:#8f77d8; --max:1000px; }
-    * { box-sizing:border-box; } body { margin:0; font-family:Inter,"Segoe UI",Arial,sans-serif; background:linear-gradient(180deg,#faf8ff,#f4f1fb); color:var(--text); line-height:1.6; }
-    a { color:inherit; } .container { width:min(var(--max),calc(100% - 32px)); margin:auto; }
-    header { border-bottom:1px solid var(--line); background:rgba(250,248,255,.94); } .header-inner { min-height:68px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
-    .brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--dark); font-weight:800; font-size:1.2rem; } .mark { width:46px; height:46px; display:grid; place-items:center; border-radius:12px; color:white; background:linear-gradient(135deg,var(--brand),var(--accent)); }
-    main { padding:52px 0 72px; } .panel { background:var(--surface); border:1px solid var(--line); border-radius:26px; padding:34px; box-shadow:0 12px 32px rgba(46,28,87,.08); }
-    .intro { margin-bottom:24px; } .eyebrow { display:inline-block; padding:7px 11px; border-radius:999px; background:#ece6fb; color:var(--dark); font-weight:700; font-size:.88rem; } h1 { margin:14px 0 10px; font-size:clamp(2rem,4vw,3.2rem); line-height:1.08; } h2 { margin:0 0 8px; }
-    p { color:var(--muted); } .grid { display:grid; grid-template-columns:1.15fr .85fr; gap:24px; align-items:start; } .card { border:1px solid var(--line); border-radius:20px; padding:24px; background:#fff; }
-    .note { background:var(--soft); } label { display:block; font-weight:700; margin-bottom:7px; } input { width:100%; padding:13px 14px; border:1px solid var(--line); border-radius:12px; font:inherit; } .field { margin-bottom:20px; }
-    .hint { display:block; margin:5px 0 0; color:var(--muted); font-size:.9rem; } button,.download { display:inline-flex; align-items:center; justify-content:center; min-height:48px; padding:0 18px; border:0; border-radius:999px; background:var(--brand); color:#fff; font:inherit; font-weight:700; text-decoration:none; cursor:pointer; }
-    button:disabled { opacity:.65; cursor:wait; } .message { margin-bottom:16px; padding:12px 14px; border-radius:12px; } .error { background:#fff1f2; color:#7d1d2a; border:1px solid #c94d58; } .status { background:var(--soft); color:var(--dark); border:1px solid var(--line); }
-    ul { padding-left:20px; color:var(--muted); } .downloads { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; } .download.secondary { background:#fff; color:var(--dark); border:1px solid var(--line); } [hidden] { display:none !important; }
-    .tester { border-left:5px solid var(--accent); } footer { padding:0 0 32px; color:var(--muted); font-size:.9rem; }
-    @media(max-width:760px){ .grid{grid-template-columns:1fr;} .panel{padding:24px 20px;} .header-inner{padding:12px 0;align-items:flex-start;flex-direction:column;} }
+    :root{--ivory:#fff8f3;--paper:#fffdfa;--ink:#1f2933;--muted:#5f686f;--coral:#ef5b3d;
+      --coral-dark:#b83e29;--teal:#2f6c6b;--teal-soft:#dceceb;--stone:#e5dbd3;--max:1200px;--shadow:0 18px 42px rgba(31,41,51,.08)}
+    *{box-sizing:border-box}html{scroll-padding-top:96px}
+    body{margin:0;background:var(--ivory);color:var(--ink);font:400 16px/1.6 Inter,"Segoe UI",Arial,sans-serif}
+    a{color:inherit;text-decoration:none}.container{width:min(var(--max),calc(100% - 40px));margin:auto}
+    :focus-visible{outline:3px solid var(--ink);outline-offset:4px}
+    header{position:sticky;top:0;z-index:20;background:rgba(255,248,243,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--stone)}
+    .header-inner{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:26px}
+    .brand{display:inline-flex;align-items:center;gap:10px;font-size:.98rem;font-weight:900;letter-spacing:.07em;white-space:nowrap}
+    .brand em{font-style:normal;color:var(--coral)}
+    .tool-nav{display:flex;align-items:center;gap:22px;font-size:.88rem;font-weight:800}
+    .tool-nav a{display:inline-flex;align-items:center;min-height:44px}.tool-nav a:hover{color:var(--coral-dark)}
+    main{padding:48px 0 60px}.intro{max-width:900px;margin-bottom:36px}
+    .eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:18px;color:var(--teal);font-size:.74rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+    .eyebrow::before{content:"";width:25px;flex-shrink:0;border-top:2px solid var(--coral)}
+    h1{margin:0 0 18px;font-size:clamp(2.7rem,5.5vw,4.5rem);line-height:1;letter-spacing:-.055em}
+    h2{margin:0 0 12px;font-size:1.65rem;line-height:1.12;letter-spacing:-.035em}
+    p{color:var(--muted)}.intro p{margin:0;max-width:78ch}.intro .subheading{margin-bottom:12px;font-size:1.16rem;color:var(--ink)}
+    .grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:24px;align-items:start}
+    .grid>*{min-width:0}.card{padding:30px;border:1px solid var(--stone);border-top:3px solid var(--coral);background:var(--paper);box-shadow:var(--shadow)}
+    .card>p{margin:0 0 26px}.note{background:#edf4f2;border-color:#c6d9d5;border-top-color:var(--teal)}
+    .note ul{margin:20px 0;padding-left:20px;color:var(--muted)}.note li+li{margin-top:12px}
+    .note .scope-limit{margin:24px 0 0;padding:18px 0 0;border-top:1px solid #bdcfcb;color:var(--ink)}
+    .scope-limit strong{display:block;margin-bottom:6px;color:var(--teal)}
+    .field{margin-bottom:24px}label{display:block;margin-bottom:8px;font-size:.94rem;font-weight:800}
+    input{width:100%;min-width:0;padding:12px 14px;border:1px solid #818b8f;border-radius:0;background:#fff;color:var(--ink);font:inherit;line-height:1.6}
+    input:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-color:var(--teal)}
+    input[type=file]{padding:10px;font-size:.9rem}
+    input::file-selector-button{padding:8px 10px;margin-right:10px;border:1px solid var(--teal);border-radius:0;background:var(--teal-soft);color:var(--teal);font:inherit;font-weight:700;cursor:pointer}
+    .hint{display:block;margin:8px 0 0;color:var(--muted);font-size:.88rem}.access-hint{margin:0 0 10px}
+    .access-link{color:var(--coral-dark);text-decoration:underline;text-underline-offset:3px}
+    button,.download{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:10px 19px;border:1px solid var(--coral-dark);border-radius:0;background:var(--coral-dark);color:#fff;font:inherit;font-weight:850;text-align:center;cursor:pointer;transition:background .16s ease}
+    button:hover,.download:hover{background:#ae3925;border-color:#ae3925}button:disabled{cursor:wait;background:#76544c;border-color:#76544c}
+    .message{margin:0 0 20px;padding:14px 16px;font-size:.94rem;overflow-wrap:anywhere}
+    #form-status{margin:16px 0 0}.error{border:1px solid var(--coral-dark);border-left-width:4px;background:#fff0ea;color:#8b2e1e}
+    .status{border:1px solid var(--teal);border-left-width:4px;background:var(--teal-soft);color:#245655}
+    #result-card{margin-top:28px;padding:30px;background:var(--paper);border:1px solid var(--stone);border-top:3px solid var(--teal);box-shadow:var(--shadow);overflow-wrap:anywhere}
+    #result-summary{margin:0;color:var(--teal);font-size:1.06rem;font-weight:600}
+    .downloads{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+    .download.secondary{background:transparent;color:var(--teal);border-color:var(--teal)}.download.secondary:hover{background:var(--teal-soft)}
+    #result-card h3{margin:30px 0 14px;padding-top:24px;border-top:1px solid var(--stone);font-size:1.3rem;letter-spacing:-.025em}
+    #flag-list{margin:0;padding:0;list-style:none}
+    #flag-list li{padding:16px 18px;background:#fff3d8;border-left:3px solid #a57932;color:#594b36;overflow-wrap:anywhere}
+    #flag-list li+li{margin-top:12px}
+    #flag-list.no-flags li{background:#edf4f2;border-color:var(--teal);color:var(--teal)}
+    .tester{margin-top:28px;padding:18px 22px;border-left:3px solid var(--teal);background:#edf4f2}
+    .tester h2{font-size:1rem;letter-spacing:0;color:var(--teal)}.tester p{margin:0;font-size:.9rem}
+    footer{padding:0 0 30px;color:var(--muted);font-size:.88rem}footer .container{padding-top:22px;border-top:1px solid var(--stone)}
+    [hidden]{display:none!important}
+    @media(max-width:980px){.card{padding:26px 22px}.grid{gap:18px}}
+    @media(max-width:820px){.grid{grid-template-columns:1fr}header{position:static}html{scroll-padding-top:16px}}
+    @media(max-width:600px){
+      .container{width:calc(100% - 28px)}.header-inner{padding:16px 0;align-items:flex-start;flex-direction:column;gap:8px}
+      .brand{white-space:normal}.tool-nav{flex-wrap:wrap;gap:8px 24px}main{padding:32px 0 44px}
+      .eyebrow{font-size:.66rem;letter-spacing:.1em}h1{overflow-wrap:anywhere}.intro{margin-bottom:28px}
+      .card,#result-card{padding:24px 18px}button,.downloads .download{width:100%}.tester{padding:16px 18px}
+    }
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}html{scroll-behavior:auto}}
   </style>
 </head>
 <body>
-  <header><div class="container header-inner"><a class="brand" href="/"><span class="mark">CC</span><span>ClearCopy Clinic</span></a><a href="/">Back to public site</a></div></header>
+  <header><div class="container header-inner">
+    <a class="brand" href="/" aria-label="Clear Copy Clinic home">CLEAR COPY <em>CLINIC</em></a>
+    <nav class="tool-nav" aria-label="Tool navigation"><a href="/#use-our-tools">Use our tools</a><a href="/">Back to home</a></nav>
+  </div></header>
   <main><div class="container">
     <section class="panel intro">
-      <span class="eyebrow">Protected pilot tool</span><h1>Afrikaans Preflight</h1>
-      <p>Conservative mechanical cleanup for Afrikaans DOCX files before substantive editing. Preflight corrects only defined punctuation and quotation patterns; it flags uncertain cases instead of guessing.</p>
+      <span class="eyebrow">CCC / AFRIKAANS PREFLIGHT &middot; PROTECTED PILOT</span><h1>Afrikaans Preflight</h1>
+      <p class="subheading">A conservative first-pass cleanup for Afrikaans Word documents before human editing.</p>
+      <p>Preflight corrects only defined punctuation and quotation patterns; it flags uncertain cases instead of guessing.</p>
     </section>
     <div class="grid">
       <section class="card">
         <h2>Run Preflight</h2><p>Your original file is never overwritten. You will receive a new cleaned DOCX and a short report.</p>
         <form id="preflight-form" novalidate>
-          <div id="form-error" class="message error" role="alert" hidden></div><div id="form-status" class="message status" role="status" hidden></div>
-          <div class="field"><label for="access-code">Access code</label><input id="access-code" type="password" autocomplete="one-time-code" maxlength="32" required /><span class="hint">Use the protected-access code supplied by ClearCopy Clinic.</span></div>
-          <div class="field"><label for="docx-file">Word document</label><input id="docx-file" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" required /><span class="hint">DOCX only, maximum 8 MB.</span></div>
+          <div id="form-error" class="message error" role="alert" hidden></div>
+          <div class="field"><label for="access-code">Access code</label><span class="hint access-hint"><strong>Afrikaans Preflight is currently a protected pilot.</strong> If you were invited to test it, enter the access code you received. Don&rsquo;t have a code? <a class="access-link" href="mailto:hello@clearcopy.clinic?subject=Afrikaans%20Preflight%20access"><strong>Request access.</strong></a></span><input id="access-code" type="password" autocomplete="one-time-code" maxlength="32" required /></div>
+          <div class="field"><label for="docx-file">Word document</label><input id="docx-file" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" required /><span class="hint">DOCX only, maximum 8 MB.</span><span class="hint">Your original document is not changed. Preflight creates a separate cleaned copy.</span></div>
           <button id="run-preflight" type="submit">Run Afrikaans Preflight</button>
+          <div id="form-status" class="message status" role="status" aria-live="polite" hidden></div>
+          <p id="review-elapsed" class="hint" aria-hidden="true" hidden></p>
         </form>
       </section>
       <aside class="card note">
         <h2>What v1 checks</h2>
         <ul><li>Incorrect forms of <strong>’n</strong>.</li><li>Obvious numeric apostrophe forms such as <strong>1950's → 1950’s</strong>.</li><li>Clear straight quotation-mark pairs.</li><li>Single-quoted primary passages and nested quotations where the pattern is unambiguous.</li><li>Ambiguous quotation patterns are left unchanged and flagged for review.</li></ul>
-        <p><strong>It does not check</strong> grammar, translation quality, facts, meaning, terminology or full house style.</p>
+        <p class="scope-limit"><strong>It does not check</strong> grammar, translation quality, facts, meaning, terminology or full house style.</p>
       </aside>
     </div>
-    <section id="result-card" class="panel" style="margin-top:24px" hidden>
+    <section id="result-card" class="panel" hidden>
       <h2>Preflight complete</h2><p id="result-summary"></p><div class="downloads"><a id="download-docx" class="download" hidden>Download cleaned DOCX</a><a id="download-report" class="download secondary" hidden>Download report</a></div>
       <h3>Manual review</h3><ul id="flag-list"></ul>
     </section>
-    <section class="panel tester" style="margin-top:24px">
+    <section class="panel tester">
       <h2>External tester notes</h2><p>When testing, please note three things: what Preflight fixes correctly, what it misses, and especially any change that should <strong>not</strong> have been made. False positives matter more than missed automatic corrections at this stage.</p>
     </section>
   </div></main>
   <footer><div class="container">ClearCopy Clinic · Human editorial judgment, strengthened by focused technology.</div></footer>
-  <script src="/afrikaans-preflight.js" defer></script>
+  <script src="/afrikaans-preflight.js?v=20260912-1" defer></script>
 </body>
 </html>

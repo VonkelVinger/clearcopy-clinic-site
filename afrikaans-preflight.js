@@ -13,6 +13,37 @@ const flags = document.getElementById("flag-list");
 const downloadDocx = document.getElementById("download-docx");
 const downloadReport = document.getElementById("download-report");
 
+const elapsed = document.getElementById("review-elapsed");
+let elapsedTimer = null;
+const downloadUrls = new Map();
+
+function stopProgress() {
+  window.clearInterval(elapsedTimer);
+  elapsedTimer = null;
+  elapsed.textContent = "";
+  elapsed.hidden = true;
+}
+function startProgress() {
+  stopProgress();
+  const started = performance.now();
+  const tick = () => {
+    const seconds = Math.floor((performance.now() - started) / 1000);
+    elapsed.textContent = `Elapsed: ${seconds} ${seconds === 1 ? "second" : "seconds"}`;
+  };
+  tick();
+  elapsed.hidden = false;
+  elapsedTimer = window.setInterval(tick, 1000);
+}
+function clearDownloads() {
+  for (const [link, url] of downloadUrls) {
+    URL.revokeObjectURL(url);
+    link.removeAttribute("href");
+    link.removeAttribute("download");
+    link.hidden = true;
+  }
+  downloadUrls.clear();
+}
+
 function show(box, text) { box.textContent = text; box.hidden = false; }
 function hide(box) { box.hidden = true; box.textContent = ""; }
 function base64FromFile(file) {
@@ -30,16 +61,21 @@ function blobFromBase64(base64, type) {
   return new Blob([array], { type });
 }
 function attachDownload(link, blob, fileName) {
+  const previousUrl = downloadUrls.get(link);
+  if (previousUrl) URL.revokeObjectURL(previousUrl);
   const url = URL.createObjectURL(blob);
+  downloadUrls.set(link, url);
   link.href = url;
   link.download = fileName;
   link.hidden = false;
 }
 function renderResult(data) {
+  clearDownloads();
   const c = data.report.counts;
   const automatic = c.indefiniteArticle + c.numericApostropheS + (2 * c.doubleQuotePairs) + (2 * c.singleQuotePairs);
   summary.textContent = `${automatic} automatic character changes; ${data.report.flags.length} paragraph(s) flagged for manual review.`;
   flags.innerHTML = "";
+  flags.classList.toggle("no-flags", !data.report.flags.length);
   if (!data.report.flags.length) {
     const li = document.createElement("li");
     li.textContent = "No ambiguous quotation patterns were flagged.";
@@ -55,11 +91,12 @@ function renderResult(data) {
   const reportName = data.fileName.replace(/\.docx$/i, "_report.txt");
   attachDownload(downloadReport, new Blob([data.report.reportText], { type: "text/plain;charset=utf-8" }), reportName);
   resultCard.hidden = false;
-  resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
+  resultCard.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
 }
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (submitButton.disabled) return;
   hide(errorBox); hide(statusBox); resultCard.hidden = true;
   const accessCode = accessInput.value.trim();
   const file = fileInput.files[0];
@@ -68,7 +105,8 @@ form.addEventListener("submit", async (event) => {
   if (file.size > 8 * 1024 * 1024) return show(errorBox, "Use a DOCX file no larger than 8 MB.");
   submitButton.disabled = true;
   submitButton.textContent = "Running Preflight…";
-  show(statusBox, "Uploading and checking the document. The original file will not be changed.");
+  show(statusBox, "Uploading and checking your document\u2026 Your original file will not be changed.");
+  startProgress();
   try {
     const fileBase64 = await base64FromFile(file);
     const response = await fetch(ENDPOINT, {
@@ -81,9 +119,11 @@ form.addEventListener("submit", async (event) => {
     hide(statusBox);
     renderResult(data);
   } catch (error) {
+    clearDownloads();
     hide(statusBox);
     show(errorBox, error.message || "Preflight could not process this file.");
   } finally {
+    stopProgress();
     submitButton.disabled = false;
     submitButton.textContent = "Run Afrikaans Preflight";
   }
