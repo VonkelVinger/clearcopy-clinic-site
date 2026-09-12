@@ -155,13 +155,15 @@ section.major{padding:74px 0}
 .service .text-link{margin-top:auto;font-size:.9rem}
 .service.emergency{background:var(--coral);border-color:var(--coral);color:#fff}
 .service.emergency .num,.service.emergency p,.service.emergency .text-link{color:#fff}
-.manuscript-note{
-  margin-top:16px;padding:26px 28px;display:grid;grid-template-columns:1.1fr .9fr;gap:30px;
+.assessment-gateway{
+  margin-top:16px;padding:32px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(280px,.8fr);gap:32px;align-items:center;
   background:var(--paper);border:1px solid var(--stone)
 }
-.manuscript-note strong{display:block;margin-bottom:7px;font-size:1.12rem}
-.manuscript-note p{margin:0;color:var(--muted)}
-.manuscript-actions{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex-wrap:wrap}
+.assessment-gateway h3{margin:0 0 12px;font-size:clamp(1.65rem,2.5vw,2.2rem);line-height:1.1;letter-spacing:-.035em}
+.assessment-gateway p{margin:0;color:var(--muted)}
+.assessment-actions{display:flex;flex-direction:column;align-items:stretch;gap:12px}
+.assessment-actions .assessment-trust{text-align:center;color:#2f6c6b;font-size:.85rem;font-weight:800}
+.assessment-actions .button{min-height:58px;padding:14px 22px;font-size:1.04rem;text-align:center}
 .tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .tool{
   position:relative;min-height:300px;display:flex;flex-direction:column;padding:28px;
@@ -229,9 +231,10 @@ section.major{padding:74px 0}
 .footer-links{display:flex;gap:18px;flex-wrap:wrap}
 .footer-links a:hover{color:var(--coral)}
 @media(max-width:980px){
-  .hero-grid,.section-head,.principle-grid,.bojador-panel,.manuscript-note{grid-template-columns:1fr}
+  .hero-grid,.section-head,.principle-grid,.bojador-panel,.assessment-gateway{grid-template-columns:1fr}
   .hero-grid{gap:42px}.route-desk{max-width:620px}.service-grid{grid-template-columns:repeat(2,1fr)}
-  .tools-grid{grid-template-columns:1fr}.manuscript-actions{justify-content:flex-start}
+  .tools-grid{grid-template-columns:1fr}.assessment-actions{align-items:flex-start}
+  .assessment-actions .assessment-trust{text-align:left}
 }
 @media(max-width:720px){
   .container{width:calc(100% - 28px)}
@@ -242,6 +245,8 @@ section.major{padding:74px 0}
   h1{font-size:clamp(2.7rem,14vw,4rem);overflow-wrap:anywhere}
   .hero-copy>p{font-size:1.04rem}.hero-actions{display:grid;grid-template-columns:1fr}.hero-actions .button{width:100%}
   .route-grid,.service-grid{grid-template-columns:1fr}
+  .assessment-gateway{padding:26px 22px;gap:24px}.assessment-actions{align-items:stretch}
+  .assessment-actions .assessment-trust{text-align:center}
   .route-card{min-height:290px}.shelf{min-height:245px}
   .book-words{height:165px}.book-writing{height:195px}.book-manuscripts{height:218px}.book-books{height:180px}
   section.major,.bojador,.principle{padding:54px 0}.route-switch{padding-bottom:54px}
@@ -393,14 +398,14 @@ html{scroll-padding-top:150px}
         </article>
       </div>
 
-      <div class="manuscript-note">
+      <div class="assessment-gateway">
         <div>
-          <strong>Manuscript work is becoming a deeper CCC capability.</strong>
-          <p>The Manuscript Operating System being developed through live book projects is designed around a simple principle: upload once, understand the whole, then work piece by piece without losing sight of the book.</p>
+          <h3>Could your idea become a book?</h3>
+          <p>You may have only an idea, a few chapters, years of research or a nearly finished manuscript. Our free initial assessment helps you work out where the project stands, what may need development and what the next sensible step could be.</p>
         </div>
-        <div class="manuscript-actions">
-          <a class="button button-dark" href="book.html">Could your idea become a book?</a>
-          <a class="text-link" href="#bojador">Publishing after editorial development</a>
+        <div class="assessment-actions">
+          <p class="assessment-trust">Free &middot; confidential &middot; no obligation</p>
+          <a class="button button-dark" href="book.html">Take the book assessment&nbsp;<span aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
     </div>
