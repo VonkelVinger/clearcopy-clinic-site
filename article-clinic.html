@@ -105,6 +105,35 @@
       #feedback-content>.feedback-section:nth-child(3){padding:18px 14px}
     }
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
+    .review-expectation{margin:12px 0 16px}
+    .report-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:20px}
+    .report-actions .hint{flex-basis:100%;margin:0}
+    .report-button{padding:9px 12px;min-height:44px;border:1px solid var(--teal);background:transparent;
+      color:var(--teal);font:inherit;font-size:.88rem;font-weight:700;cursor:pointer}
+    .report-button:hover{background:var(--teal-soft)}
+    .report-button:disabled{cursor:wait;opacity:.7}
+    .report-metadata{margin:0 0 26px;padding:14px 0;border-top:1px solid #bdcfcb;border-bottom:1px solid #bdcfcb;font-size:.88rem}
+    .report-metadata div+div{margin-top:8px}.report-metadata dt{font-weight:800}.report-metadata dd{margin:0;color:var(--muted)}
+    .print-heading,.print-footer{display:none}
+    @media print{
+      @page{margin:18mm}
+      html,body{background:#fff;color:#000;font-size:11pt}
+      .site-header,.page-intro,.form-card,.site-footer,.report-actions,#feedback-intro,#feedback-empty{display:none!important}
+      .workspace,.workspace-grid{display:block!important;width:100%;max-width:none;margin:0;padding:0}
+      #feedback-panel{display:none}
+      #feedback-panel.report-ready{display:block;width:100%;padding:0;border:0;box-shadow:none;background:#fff;color:#000;overflow:visible}
+      .print-heading{display:block;margin-bottom:12pt;font-size:16pt;font-weight:800}
+      .print-footer{display:block;margin:24pt 0 0;padding-top:10pt;border-top:1px solid #999;font-size:9pt}
+      #feedback-title{font-size:20pt}
+      .feedback-list{display:block}
+      .feedback-section{break-inside:auto;margin-top:18pt;padding-top:12pt}
+      .feedback-section h3,.feedback-item h4,.report-metadata dt{break-after:avoid}
+      .feedback-section p,.feedback-section li{orphans:3;widows:3}
+      .feedback-item,.warning,.evidence{break-inside:auto}
+      #feedback-content>.feedback-section:nth-child(3){padding:12pt;border:1px solid #999;border-left-width:3px}
+      .feedback-card *{max-width:100%;overflow-wrap:anywhere;box-shadow:none}
+      .feedback-item p,.report-metadata dd,.evidence,.warning p{color:#222}
+    }
   </style>
 </head>
 <body>
@@ -141,7 +170,6 @@
         </section>
         <form id="article-form" novalidate>
           <div id="form-error" class="message error" role="alert" hidden></div>
-          <div id="form-status" class="message status" role="status" aria-live="polite" hidden></div>
           <div class="form-field">
             <label for="pilot-access-code">Pilot access code</label>
             <p class="hint"><strong>Article Clinic is currently a limited pilot.</strong> If you were invited to test it, enter the access code you received. Don’t have a code? <a class="access-link" href="mailto:hello@clearcopy.clinic?subject=Article%20Clinic%20access"><strong>Request access.</strong></a></p>
@@ -186,12 +214,23 @@
             <span class="field-error" id="article-text-error" hidden></span>
           </div>
           <button id="review-button" class="button" type="submit">Review my article</button>
+          <p class="hint review-expectation">Reviews usually take less than a minute. Longer articles may take a little longer.</p>
+          <div id="form-status" class="message status" role="status" aria-live="polite" hidden></div>
+          <p id="review-elapsed" class="hint" aria-hidden="true" hidden></p>
         </form>
       </div>
       <aside id="feedback-panel" class="feedback-card" aria-labelledby="feedback-title">
         <h2 id="feedback-title">Your coaching notes</h2>
         <p id="feedback-intro" class="card-intro">Your feedback will appear here after the Clinic has reviewed your draft.</p>
+        <div id="report-actions" class="report-actions" hidden>
+          <button id="print-notes" class="report-button" type="button">Print / save as PDF</button>
+          <button id="copy-notes" class="report-button" type="button">Copy all notes</button>
+          <span id="copy-status" class="hint" role="status" aria-live="polite"></span>
+        </div>
+        <div class="print-heading">Clear Copy Clinic / Article Clinic</div>
+        <dl id="report-metadata" class="report-metadata" hidden></dl>
         <div id="feedback-content"></div>
+        <p class="print-footer">Clear Copy Clinic &middot; AI-assisted review, not AI authorship.</p>
         <div id="feedback-empty" class="empty">The first response will diagnose and question. It will not replace your article with generated copy.</div>
       </aside>
     </div>
