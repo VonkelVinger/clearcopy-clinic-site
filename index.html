@@ -72,11 +72,11 @@ h1 .accent{color:var(--coral)}
   max-width:690px;margin-bottom:30px;color:var(--muted);font-size:1.16rem
 }
 .hero-actions{display:flex;flex-wrap:wrap;gap:12px}
-/* Crop the artwork's blank left margin while keeping its collage proportional. */
-.hero-art{width:100%;max-width:520px;justify-self:center;overflow:hidden}
+.hero-art{
+  width:100%;max-width:560px;justify-self:center;overflow:visible;
+}
 .hero-art img{
-  display:block;width:132%;max-width:none;height:auto;margin-left:-32%;
-  mix-blend-mode:multiply
+  display:block;width:100%;max-width:100%;height:auto;
 }
 .route-intro{padding:20px 0 18px}
 .route-intro .container{
