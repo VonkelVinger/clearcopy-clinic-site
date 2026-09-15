@@ -9,7 +9,8 @@ const logger = require("firebase-functions/logger");
 const ALLOWED_ORIGINS = new Set([
   "http://127.0.0.1:8080",
   "http://localhost:8080",
-  "https://clearcopy.clinic"
+  "https://clearcopy.clinic",
+  "https://www.clearcopy.clinic"
 ]);
 
 const ARTICLE_TYPES = new Set([
@@ -240,6 +241,10 @@ async function requestAssessment(client, submission, digest) {
         schema: ASSESSMENT_SCHEMA
       }
     }
+  }, {
+    timeout: 165000,
+    // Retries would restart the SDK timeout and exceed Firebase's deadline.
+    maxRetries: 0
   });
 
   if (!completion.output_text) throw new Error("malformed-model-output");
@@ -293,10 +298,27 @@ function createArticleHandler({ getSecrets, createClient, now = () => new Date()
       result = await requestAssessment(createClient(secrets.openaiApiKey), submission, digest);
     } catch (error) {
       const timeout = error && (
+        error instanceof OpenAI.APIConnectionTimeoutError ||
         error.name === "AbortError" ||
         error.name === "APIConnectionTimeoutError" ||
         error.code === "ETIMEDOUT"
       );
+      // Never log error messages, bodies, causes, or arbitrary provider fields.
+      const safeNames = new Set([
+        "Error", "AbortError", "APIConnectionTimeoutError", "APIConnectionError",
+        "APIError", "BadRequestError", "AuthenticationError", "PermissionDeniedError",
+        "NotFoundError", "ConflictError", "UnprocessableEntityError",
+        "RateLimitError", "InternalServerError"
+      ]);
+      const errorName = error instanceof OpenAI.APIError ? error.constructor.name : error?.name;
+      log.error({
+        event: "article_clinic_failure",
+        durationMs: Date.now() - startedAt,
+        errorName: safeNames.has(errorName) ? errorName : "Error",
+        status: Number.isInteger(error?.status) && error.status >= 100 && error.status <= 599
+          ? error.status : null,
+        timeout: Boolean(timeout)
+      });
       return sendJson(response, timeout ? 504 : 502, {
         error: timeout ? "The review took too long. Please try again." : "Article Clinic is temporarily unavailable."
       });
@@ -327,7 +349,7 @@ exports.assessArticle = onRequest({
   cors: false,
   maxInstances: 1,
   concurrency: 5,
-  timeoutSeconds: 120,
+  timeoutSeconds: 180,
   secrets: [OPENAI_API_KEY, PILOT_ACCESS_CODES, PILOT_ACCESS_PEPPER]
 }, production.handler);
 

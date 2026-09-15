@@ -2,7 +2,7 @@
   "use strict";
 
   const API_URL = "https://us-central1-clear-copy-clinic.cloudfunctions.net/assessArticle";
-  const REQUEST_TIMEOUT_MS = 125000;
+  const REQUEST_TIMEOUT_MS = 190000;
 
   const form = document.getElementById("article-form");
   const button = document.getElementById("review-button");
@@ -297,7 +297,9 @@
       resetReport();
       const message = error.name === "AbortError"
         ? "The review took too long. No submission was saved; please try again."
-        : error.message;
+        : error.name === "TypeError" || /failed to fetch/i.test(error.message || "")
+          ? "Article Clinic could not complete this review. Please try again."
+          : error.message;
       setMessage(formError, message || "Article Clinic is temporarily unavailable.");
       setMessage(formStatus, "");
     } finally {
