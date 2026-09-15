@@ -199,6 +199,8 @@ Prioritise high-value editorial issues before grammar:
 
 Identify genuine strengths worth preserving and only the most important revision priorities. Ground findings in short excerpts or precise references to the submitted article. Prefer actions and coaching questions over replacement wording.
 
+Evidence items must be short, exact excerpts from the submitted article wherever possible, and each item must stand on its own. Do not stitch unrelated excerpts or sentence fragments together. Do not add editorial commentary, stray punctuation, schema text or explanatory wording inside evidence fields. If an exact excerpt would be unclear without context, use a precise reference to the relevant passage instead of manufacturing or combining text.
+
 Integrity rules:
 - If a vivid scene may be reconstructed, do NOT accuse the writer of invention. Ask whether the details were actually observed or properly sourced.
 - If a direct quote sounds unusually polished or perfectly thematic, advise checking it against the recording/notes; do not claim fabrication.
@@ -210,6 +212,8 @@ Integrity rules:
 - For copy-editing, identify concrete problems from the article rather than generic advice.
 
 Every text field must contain polished final user-facing prose only, with no internal notes, drafting comments, process commentary, schema commentary, chain-of-thought, or unfinished fragments.
+
+Before returning the JSON, check every user-facing field for grammatical completeness, accidental duplication, malformed fragments and obvious language errors. Preserve exact source excerpts when checking evidence.
 
 Return the required JSON only.`;
 }

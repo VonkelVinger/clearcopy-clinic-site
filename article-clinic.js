@@ -119,7 +119,7 @@
     );
     if (data.copyEdits.length) feedbackContent.appendChild(listSection("Specific editing and proofreading points", data.copyEdits));
 
-    const quick = section("If you only have 15 minutes");
+    const quick = section("Your first priorities to improve this article");
     const ol = document.createElement("ol");
     data.quickPlan.forEach((item) => { const li = document.createElement("li"); li.textContent = item; ol.appendChild(li); });
     quick.appendChild(ol); feedbackContent.appendChild(quick);
