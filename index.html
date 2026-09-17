@@ -166,19 +166,22 @@ section.major{padding:74px 0}
 .bojador-copy h2{margin:8px 0 14px;font-size:clamp(2.2rem,4.2vw,3.6rem);line-height:1;letter-spacing:-.055em}
 .bojador-copy p{max-width:680px;color:#5f584c}
 .bojador-path{
-  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;
+  position:relative;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1.05fr) minmax(0,1.25fr) minmax(0,.8fr);gap:8px;
   min-width:0;margin:0;padding:0;list-style:none
 }
-.bojador-step{position:relative;min-width:0;padding:0;text-align:center}
-.bojador-step:not(:last-child)::after{
-  content:"\2192";position:absolute;right:-22px;top:50%;width:22px;
-  color:#835b1f;font-size:1.1rem;line-height:1;text-align:center;transform:translateY(-50%)
+.bojador-path::before{
+  content:"";position:absolute;left:0;right:0;top:0;border-top:1px solid #bba77e
+}
+.bojador-step{position:relative;min-width:0;padding:14px 0 10px}
+.bojador-step::before{
+  content:"";position:absolute;left:0;top:0;width:18px;border-top:3px solid #835b1f
 }
 .bojador-step span{
   display:block;margin-bottom:10px;color:#835b1f;
   font-size:.76rem;font-weight:800;letter-spacing:.1em
 }
 .bojador-step strong{display:block;font-size:.78rem;font-weight:800;letter-spacing:.06em;overflow-wrap:anywhere}
+.bojador-step:last-child::before{border-top-color:var(--teal)}
 .bojador-step:last-child span{color:#2f6c6b}
 .principle{padding:68px 0}
 .principle-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:55px;align-items:start}
@@ -229,10 +232,10 @@ section.major{padding:74px 0}
   section.major,.bojador,.principle{padding:54px 0}.route-switch{padding-bottom:54px}
   .section-head{gap:20px}.service{min-height:0}
   .bojador-panel{padding:30px 22px}
-  .bojador-path{grid-template-columns:1fr;gap:26px}
-  .bojador-step:not(:last-child)::after{
-    content:"\2193";right:auto;left:50%;top:calc(100% + 5px);width:auto;transform:translateX(-50%)
-  }
+  .bojador-path{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px}
+  .bojador-path::before{display:none}
+  .bojador-step{border-top:1px solid #bba77e}
+  .bojador-step::before{top:-1px}
   .invitation{padding-bottom:54px}.invitation-panel{padding:36px 25px}
   .invitation-panel::before{right:-160px;top:-120px}.footer-inner{align-items:flex-start;flex-direction:column}
 }
