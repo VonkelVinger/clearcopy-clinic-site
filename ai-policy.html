@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="/assets/ccc-favicon.svg" type="image/svg+xml">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="How Clear Copy Clinic uses AI as an editorial tool while keeping judgement and responsibility with people.">
+<title>How we use AI | Clear Copy Clinic</title>
+<style>
+:root{
+  --ivory:#fff8f3;--paper:#fffdfa;--peach:#f8e8df;--ink:#1f2933;
+  --muted:#5f686f;--coral:#ef5b3d;--coral-dark:#b83e29;
+  --teal:#2f6c6b;--stone:#e5dbd3
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--ivory);color:var(--ink);
+  font:400 16px/1.65 Inter,"Segoe UI",Arial,sans-serif
+}
+a{color:inherit;text-decoration:none}
+h1,h2,p,blockquote{margin-top:0}
+.container{width:min(960px,calc(100% - 40px));margin:auto}
+.policy-shell{width:min(800px,calc(100% - 40px));margin:auto}
+.skip-link{position:absolute;left:-9999px}
+.skip-link:focus{
+  left:16px;top:16px;z-index:100;background:var(--ink);color:#fff;padding:10px 14px
+}
+.site-header{
+  position:sticky;top:0;z-index:30;background:rgba(255,248,243,.94);
+  border-bottom:1px solid var(--stone);backdrop-filter:blur(12px)
+}
+.header-inner{
+  min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px
+}
+.brand{
+  display:inline-flex;align-items:center;gap:10px;font-size:.98rem;font-weight:900;
+  letter-spacing:.07em;white-space:nowrap
+}
+.brand em{font-style:normal;color:var(--coral)}
+.home-link{font-size:.88rem;font-weight:800}
+.home-link span{color:var(--coral-dark)}
+.home-link:hover{color:var(--coral-dark)}
+.policy-hero{padding:76px 0 54px}
+.eyebrow{
+  display:flex;align-items:center;gap:10px;margin:0 0 20px;color:var(--teal);
+  font-size:.74rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase
+}
+.eyebrow::before{content:"";width:25px;border-top:2px solid var(--coral)}
+h1{
+  margin-bottom:24px;font-size:clamp(3.2rem,8vw,5.4rem);
+  line-height:.95;letter-spacing:-.065em
+}
+.standfirst{
+  max-width:760px;margin-bottom:0;color:var(--muted);font-size:1.18rem;line-height:1.65
+}
+.policy-content{padding-bottom:76px}
+.policy-section{padding:36px 0;border-top:1px solid var(--stone)}
+.policy-section h2{
+  margin-bottom:16px;font-size:clamp(1.55rem,3vw,2rem);line-height:1.12;
+  letter-spacing:-.035em
+}
+.policy-section p{margin-bottom:18px}
+.policy-section p:last-child{margin-bottom:0}
+.workflow{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:26px;
+  margin:28px 0 26px;padding:0;list-style:none
+}
+.workflow li{
+  position:relative;min-height:112px;display:flex;align-items:center;padding:16px;
+  background:var(--paper);border:1px solid var(--stone);border-top:4px solid var(--coral);
+  font-size:.9rem;font-weight:850;line-height:1.35
+}
+.workflow li:nth-child(even){border-top-color:var(--teal)}
+.workflow li:not(:last-child)::after{
+  content:"\2192";position:absolute;left:calc(100% + 8px);top:50%;
+  color:var(--coral-dark);font-size:1.1rem;transform:translateY(-50%)
+}
+.principle-callout{
+  margin:26px 0 22px;padding:32px 34px;background:var(--peach);
+  border:1px solid var(--stone);border-left:4px solid var(--teal)
+}
+.principle-callout p{
+  margin:0;font-size:clamp(1.85rem,4.5vw,2.8rem);font-weight:900;
+  line-height:1.05;letter-spacing:-.05em
+}
+.contact-link{
+  color:var(--coral-dark);font-weight:850;text-decoration:underline;
+  text-decoration-thickness:1px;text-underline-offset:4px
+}
+.site-footer{padding:0 0 30px;color:var(--muted);font-size:.9rem}
+.footer-inner{padding-top:24px;border-top:1px solid var(--stone)}
+.footer-inner p{margin:0}
+:focus-visible{outline:3px solid var(--ink);outline-offset:5px}
+main:focus{outline:none}
+@media(max-width:760px){
+  .container,.policy-shell{width:calc(100% - 28px)}
+  .site-header{position:static}
+  .policy-hero{padding:52px 0 40px}
+  .policy-content{padding-bottom:54px}
+  .policy-section{padding:30px 0}
+  .workflow{grid-template-columns:1fr;gap:28px}
+  .workflow li{min-height:0}
+  .workflow li:not(:last-child)::after{
+    content:"\2193";left:50%;top:calc(100% + 3px);transform:translateX(-50%)
+  }
+  .principle-callout{padding:26px 24px}
+}
+@media(max-width:480px){
+  .header-inner{min-height:0;padding:16px 0;align-items:flex-start;flex-direction:column;gap:10px}
+  .brand{white-space:normal}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html" aria-label="Clear Copy Clinic home">CLEAR COPY <em>CLINIC</em></a>
+    <nav aria-label="Page navigation">
+      <a class="home-link" href="index.html"><span aria-hidden="true">←</span> Back to homepage</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main-content" tabindex="-1">
+  <header class="policy-hero">
+    <div class="policy-shell">
+      <p class="eyebrow">Editorial practice</p>
+      <h1>How we use AI</h1>
+      <p class="standfirst">Clear Copy Clinic is human-led and AI-assisted. We use AI where it can make editorial work faster, more systematic or more useful, while keeping editorial judgement and responsibility with people.</p>
+    </div>
+  </header>
+
+  <article class="policy-shell policy-content">
+    <section class="policy-section" aria-labelledby="tool-heading">
+      <h2 id="tool-heading">AI is an editorial tool, not the editor</h2>
+      <p>Clear Copy Clinic may use ChatGPT and other AI systems as editorial assistants. They can help us analyse material, compare versions, identify repetition or inconsistencies, test structures, simplify difficult wording, retrieve relevant material and develop working drafts.</p>
+      <p>We do not treat AI as the author, the subject-matter expert or the final decision-maker.</p>
+    </section>
+
+    <section class="policy-section" aria-labelledby="human-heading">
+      <h2 id="human-heading">What remains human</h2>
+      <p>Human editors remain responsible for meaning, accuracy, context, voice, difficult editorial choices and the final work.</p>
+      <p>Where we are working from source material, the source remains authoritative. AI-generated wording or analysis is treated as a working contribution that must be assessed in context rather than as verified fact.</p>
+      <p>AI should not introduce new findings, claims or interpretations that are unsupported by the source material.</p>
+    </section>
+
+    <section class="policy-section" aria-labelledby="workflow-heading">
+      <h2 id="workflow-heading">Our normal workflow</h2>
+      <ol class="workflow" aria-label="Clear Copy Clinic workflow">
+        <li>Source material</li>
+        <li>AI-assisted analysis or working draft</li>
+        <li>Human editorial review and verification</li>
+        <li>Subject-matter or client review where appropriate</li>
+        <li>Final work</li>
+      </ol>
+      <p>The exact process varies according to the project. Some work requires very little AI assistance; other projects benefit substantially from it. The purpose is to use technology for leverage without handing over human responsibility.</p>
+    </section>
+
+    <section class="policy-section" aria-labelledby="confidential-heading">
+      <h2 id="confidential-heading">Confidential and restricted material</h2>
+      <p>Where work contains confidential, unpublished, embargoed or institutionally restricted material, we first consider whether there are contractual, ethical, employer, institutional or client restrictions on the use of external AI services.</p>
+      <p>Where such use is prohibited or inappropriate, the workflow must be adapted accordingly.</p>
+      <p>Clients should tell us about any relevant confidentiality, data-handling or AI-use requirements before work begins.</p>
+    </section>
+
+    <section class="policy-section" aria-labelledby="tools-heading">
+      <h2 id="tools-heading">Public Clear Copy Clinic tools</h2>
+      <p>Some Clear Copy Clinic tools use AI to provide diagnosis, coaching, comparison or other editorial assistance.</p>
+      <p>Their output should not be treated as an automatic professional, factual, legal, academic or regulatory determination. Where a question requires specialist judgement or the available evidence is insufficient, human review may be required.</p>
+    </section>
+
+    <section class="policy-section" aria-labelledby="principle-heading">
+      <h2 id="principle-heading">Our principle</h2>
+      <blockquote class="principle-callout">
+        <p>Technology for leverage. People for judgement.</p>
+      </blockquote>
+      <p>Our aim is not to make the writer or editor disappear. It is to use technology intelligently so that people can produce clearer, stronger and more trustworthy work.</p>
+    </section>
+
+    <section class="policy-section" aria-labelledby="questions-heading">
+      <h2 id="questions-heading">Questions</h2>
+      <p>If a client wants to know how AI will be used on a particular project, they are welcome to ask before work begins.</p>
+      <p>Contact: <a class="contact-link" href="mailto:hello@clearcopy.clinic">hello@clearcopy.clinic</a></p>
+    </section>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="policy-shell footer-inner">
+    <p>Clear Copy Clinic · Developed in South Africa for writers all over the world.</p>
+  </div>
+</footer>
+</body>
+</html>
