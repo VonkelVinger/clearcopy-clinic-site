@@ -1,34 +1,162 @@
-<!-- ACADEMIC INTEGRITY -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <link rel="icon" href="/assets/ccc-favicon.svg" type="image/svg+xml">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Academic Integrity | ClearCopy.Clinic</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="description" content="Academic integrity and legitimate editorial support at Clear Copy Clinic.">
+<title>Academic Integrity | Clear Copy Clinic</title>
 <style>
-body { font-family: 'Inter', sans-serif; max-width: 800px; margin: auto; padding: 40px 20px; line-height: 1.6; }
-h1, h2 { color: #3e2c73; }
+:root{
+  --ivory:#fff8f3;--ink:#1f2933;--muted:#5f686f;--coral:#ef5b3d;
+  --coral-dark:#b83e29;--teal:#2f6c6b;--stone:#e5dbd3
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--ivory);color:var(--ink);
+  font:400 16px/1.65 Inter,"Segoe UI",Arial,sans-serif
+}
+a{color:inherit;text-decoration:none}
+h1,h2,p{margin-top:0}
+.container{width:min(960px,calc(100% - 40px));margin:auto}
+.policy-shell{width:min(800px,calc(100% - 40px));margin:auto}
+.skip-link{position:absolute;left:-9999px}
+.skip-link:focus{
+  left:16px;top:16px;z-index:100;background:var(--ink);color:#fff;padding:10px 14px
+}
+.site-header{
+  position:sticky;top:0;z-index:30;background:rgba(255,248,243,.94);
+  border-bottom:1px solid var(--stone);backdrop-filter:blur(12px)
+}
+.header-inner{
+  min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px
+}
+.brand{
+  display:inline-flex;align-items:center;gap:10px;font-size:.98rem;font-weight:900;
+  letter-spacing:.07em;white-space:nowrap
+}
+.brand em{font-style:normal;color:var(--coral)}
+.home-link{font-size:.88rem;font-weight:800}
+.home-link span{color:var(--coral-dark)}
+.home-link:hover{color:var(--coral-dark)}
+.policy-hero{padding:76px 0 54px}
+.eyebrow{
+  display:flex;align-items:center;gap:10px;margin:0 0 20px;color:var(--teal);
+  font-size:.74rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase
+}
+.eyebrow::before{content:"";width:25px;border-top:2px solid var(--coral)}
+h1{
+  margin-bottom:24px;font-size:clamp(3.2rem,8vw,5.4rem);
+  line-height:.95;letter-spacing:-.065em
+}
+.standfirst{
+  max-width:760px;margin-bottom:0;color:var(--muted);font-size:1.18rem;line-height:1.65
+}
+.policy-content{padding-bottom:76px}
+.policy-section{padding:36px 0;border-top:1px solid var(--stone)}
+.policy-section h2{
+  margin-bottom:16px;font-size:clamp(1.55rem,3vw,2rem);line-height:1.12;
+  letter-spacing:-.035em
+}
+.policy-section p{margin-bottom:18px}
+.policy-section p:last-child{margin-bottom:0}
+.content-link,.contact-link{
+  color:var(--coral-dark);font-weight:850;text-decoration:underline;
+  text-decoration-thickness:1px;text-underline-offset:4px
+}
+.site-footer{padding:0 0 30px;color:var(--muted);font-size:.9rem}
+.footer-inner{padding-top:24px;border-top:1px solid var(--stone)}
+.footer-inner p{margin:0}
+:focus-visible{outline:3px solid var(--ink);outline-offset:5px}
+main:focus{outline:none}
+@media(max-width:760px){
+  .container,.policy-shell{width:calc(100% - 28px)}
+  .site-header{position:static}
+  .policy-hero{padding:52px 0 40px}
+  .policy-content{padding-bottom:54px}
+  .policy-section{padding:30px 0}
+}
+@media(max-width:480px){
+  .header-inner{min-height:0;padding:16px 0;align-items:flex-start;flex-direction:column;gap:10px}
+  .brand{white-space:normal}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
 
-<h1>Academic Integrity & AI Use</h1>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html" aria-label="Clear Copy Clinic home">CLEAR COPY <em>CLINIC</em></a>
+    <nav aria-label="Page navigation">
+      <a class="home-link" href="index.html"><span aria-hidden="true">&larr;</span> Back to homepage</a>
+    </nav>
+  </div>
+</header>
 
-<p>ClearCopy.Clinic provides editing support only and does not engage in ghostwriting or content generation for submission.</p>
+<main id="main-content" tabindex="-1">
+  <header class="policy-hero">
+    <div class="policy-shell">
+      <p class="eyebrow">Editorial practice</p>
+      <h1>Academic Integrity</h1>
+      <p class="standfirst">Clear Copy Clinic can help students, researchers and academics improve the clarity, structure and presentation of their own work. Our role is to support the writer and strengthen the work, not to replace the writer or misrepresent authorship.</p>
+    </div>
+  </header>
 
-<h2>Editing approach</h2>
-<p>All edits are intended to improve clarity, correctness, and presentation while preserving the author's original meaning.</p>
+  <article class="policy-shell policy-content">
+    <section class="policy-section" aria-labelledby="what-we-do-heading">
+      <h2 id="what-we-do-heading">What we do</h2>
+      <p>Clear Copy Clinic provides legitimate editorial support such as proofreading, language editing, structural feedback, clarity improvements, formatting assistance and editorial coaching.</p>
+      <p>Depending on the project and the rules that apply to it, this may include suggesting revisions, identifying problems, explaining why something is unclear and helping the writer improve wording or structure.</p>
+      <p>The aim is to improve work that remains substantively the client’s own.</p>
+    </section>
 
-<h2>AI tools</h2>
-<p>Digital tools may be used to assist with efficiency, but all substantive editorial decisions are reviewed by a human editor.</p>
+    <section class="policy-section" aria-labelledby="what-we-do-not-heading">
+      <h2 id="what-we-do-not-heading">What we do not do</h2>
+      <p>We do not knowingly produce academic work for a client to submit as though they had written or researched it themselves.</p>
+      <p>We do not invent research, fabricate sources, manufacture findings or knowingly disguise plagiarism or other academic misconduct.</p>
+      <p>Where the boundary between legitimate editing and prohibited assistance depends on an institution, course, supervisor, journal or assessment rule, those rules take precedence.</p>
+    </section>
 
-<h2>Turnitin and similar systems</h2>
-<p>No guarantees are made regarding similarity scores or AI detection results.</p>
+    <section class="policy-section" aria-labelledby="ai-heading">
+      <h2 id="ai-heading">AI and academic work</h2>
+      <p>Clear Copy Clinic may use AI-assisted editorial tools where appropriate, but AI does not replace human editorial judgement and its output is not treated as an authoritative source.</p>
+      <p>Academic institutions and publishers differ in what forms of AI assistance they permit. Clients remain responsible for telling us about any relevant restrictions or disclosure requirements.</p>
+      <p>For our broader policy on the use of AI in editorial work, see <a class="content-link" href="ai-policy.html">How we use AI</a>.</p>
+    </section>
 
-<h2>Client responsibility</h2>
-<p>The client remains responsible for ensuring that submitted work complies with institutional policies.</p>
+    <section class="policy-section" aria-labelledby="similarity-heading">
+      <h2 id="similarity-heading">Similarity checks and AI detection</h2>
+      <p>We do not guarantee any particular Turnitin, similarity or AI-detection score.</p>
+      <p>Our purpose is not to manipulate detection systems. We focus instead on legitimate authorship, proper attribution, clear writing and compliance with the rules that apply to the work.</p>
+    </section>
 
+    <section class="policy-section" aria-labelledby="sources-heading">
+      <h2 id="sources-heading">Sources, citations and factual responsibility</h2>
+      <p>Where we work with academic or research material, sources supplied by the client remain authoritative.</p>
+      <p>We may flag unclear, incomplete or inconsistent citations and references, but the client and relevant subject-matter experts remain responsible for the accuracy, completeness and appropriateness of the underlying research and sources.</p>
+    </section>
+
+    <section class="policy-section" aria-labelledby="responsibility-heading">
+      <h2 id="responsibility-heading">Client responsibility</h2>
+      <p>The client remains responsible for ensuring that submitted work complies with the requirements of their institution, supervisor, course, journal, funder or other relevant authority.</p>
+      <p>If a project is subject to particular rules about editing, AI, confidentiality, authorship or disclosure, clients should tell us before work begins.</p>
+    </section>
+
+    <section class="policy-section" aria-labelledby="questions-heading">
+      <h2 id="questions-heading">Questions</h2>
+      <p>If you are unsure whether a particular form of editorial assistance is allowed, ask us before the work begins. Where necessary, we may also ask you to confirm the relevant institutional or assessment rules.</p>
+      <p>Contact: <a class="contact-link" href="mailto:hello@clearcopy.clinic">hello@clearcopy.clinic</a></p>
+    </section>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="policy-shell footer-inner">
+    <p>Clear Copy Clinic &middot; Developed in South Africa for writers all over the world.</p>
+  </div>
+</footer>
 </body>
 </html>
