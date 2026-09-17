@@ -159,24 +159,12 @@ section.major{padding:74px 0}
 .tool .text-link{margin-top:auto}
 .bojador{padding:74px 0}
 .bojador-panel{
-  display:grid;grid-template-columns:1fr .95fr;gap:42px;align-items:center;
   padding:44px;background:#f3e7cd;border:1px solid #dcc79a
 }
+.bojador-copy{max-width:800px}
 .bojador-copy .kicker{color:#835b1f}
 .bojador-copy h2{margin:8px 0 14px;font-size:clamp(2.2rem,4.2vw,3.6rem);line-height:1;letter-spacing:-.055em}
 .bojador-copy p{max-width:680px;color:#5f584c}
-.bojador-path{
-  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;
-  min-width:0;margin:0;padding:0;list-style:none
-}
-.bojador-step{min-width:0;padding:16px 0;border-top:1px solid #bba77e}
-.bojador-step span{
-  display:block;margin-bottom:18px;color:#835b1f;
-  font-size:.7rem;font-weight:700;letter-spacing:.12em
-}
-.bojador-step strong{display:block;font-size:.64rem;letter-spacing:.045em;overflow-wrap:anywhere}
-.bojador-step:last-child{border-top-color:var(--teal)}
-.bojador-step:last-child span{color:#2f6c6b}
 .principle{padding:68px 0}
 .principle-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:55px;align-items:start}
 .principle h2{margin:0;font-size:clamp(2.15rem,4.4vw,3.75rem);line-height:1;letter-spacing:-.055em}
@@ -206,7 +194,7 @@ section.major{padding:74px 0}
 .footer-links{display:flex;gap:18px;flex-wrap:wrap}
 .footer-links a:hover{color:var(--coral)}
 @media(max-width:980px){
-  .hero-grid,.section-head,.principle-grid,.bojador-panel,.assessment-gateway{grid-template-columns:1fr}
+  .hero-grid,.section-head,.principle-grid,.assessment-gateway{grid-template-columns:1fr}
   .hero-grid{gap:42px}.hero-art{max-width:460px}.service-grid{grid-template-columns:repeat(2,1fr)}
   .tools-grid{grid-template-columns:1fr}.assessment-actions{align-items:flex-start}
   .assessment-actions .assessment-trust{text-align:left}
@@ -226,7 +214,6 @@ section.major{padding:74px 0}
   section.major,.bojador,.principle{padding:54px 0}.route-switch{padding-bottom:54px}
   .section-head{gap:20px}.service{min-height:0}
   .bojador-panel{padding:30px 22px}
-  .bojador-path{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px}
   .invitation{padding-bottom:54px}.invitation-panel{padding:36px 25px}
   .invitation-panel::before{right:-160px;top:-120px}.footer-inner{align-items:flex-start;flex-direction:column}
 }
@@ -417,12 +404,6 @@ html{scroll-padding-top:150px}
         <p>Clear Copy Clinic develops editorial methods, tools and manuscript systems. House of Bojador is the specialist publishing extension for selected projects that move beyond editorial development into production, publication, distribution and richer book experiences.</p>
         <a class="button button-dark" href="https://www.houseofbojador.com/" target="_blank" rel="noopener">Visit House of Bojador</a>
       </div>
-      <ol class="bojador-path" aria-label="From manuscript to reader" role="list">
-        <li class="bojador-step"><span>01</span><strong>MANUSCRIPT</strong></li>
-        <li class="bojador-step"><span>02</span><strong>EDITORIAL</strong></li>
-        <li class="bojador-step"><span>03</span><strong>PRODUCTION</strong></li>
-        <li class="bojador-step"><span>04</span><strong>READER</strong></li>
-      </ol>
     </div>
   </section>
 
