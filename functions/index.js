@@ -228,3 +228,4 @@ exports.assessHeadline = onRequest({ cors: false, maxInstances: 1, concurrency: 
 exports.__testables = { createAssessHeadlineHandler, isValidAssessment, isValidResult, codeDigest, pilotCodeLabel, PER_CODE_DAILY_LIMIT, TOTAL_DAILY_LIMIT, ASSESSMENT_SCHEMA };
 exports.afrikaansPreflight = require("./preflight").afrikaansPreflight;
 exports.assessArticle = require("./article-clinic").assessArticle;
+exports.submitEnquiry = require("./enquiries").submitEnquiry;

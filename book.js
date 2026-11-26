@@ -179,16 +179,18 @@ function projectGuidance(view){
 function results(){
   const view=diagnose(),guidance=projectGuidance(view);
   const heading=view.material_readiness.state==="Early stage"?"The project is still early, which means the next step is definition rather than publication.":view.concept.state==="Promising"&&view.audience.state==="Clear"&&view.material_readiness.state==="Ready for closer assessment"?"There is enough here to look more closely.":"This looks developable, but some fundamentals still need work.";
-  app.innerHTML=`<section class="result-head"><p class="eyebrow">INITIAL PROJECT VIEW</p><h2 tabindex="-1">${heading}</h2><p>This is an initial development assessment based only on the information you supplied. It is not a publishing offer, manuscript evaluation or prediction of sales.</p></section>
+  app.innerHTML=`<section class="result-head"><p class="eyebrow">AUTOMATED PROJECT VIEW</p><h2 tabindex="-1">${heading}</h2><p>This view is generated automatically from your answers using fixed rules. It is not a personal manuscript assessment or a prediction of sales.</p></section>
   <div class="diagnostic-view">${Object.values(view).map(d=>`<section class="diagnostic"><h3>${esc(d.name)} <span>${esc(d.state)}</span></h3><p>${esc(d.reason)}</p></section>`).join("")}</div>
   <section class="guidance"><h2>What looks promising</h2><ul>${guidance.promising.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></section>
   <section class="guidance"><h2>What needs development</h2><ul>${guidance.development.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></section>
-  <section class="guidance"><h2>What we would need to see next</h2><p>${esc(guidance.material)}</p></section>
+  <section class="guidance"><h2>Material to consider next</h2><p>${esc(guidance.material)}</p></section>
   <section class="guidance route"><h2>A possible next step</h2><p>${esc(guidance.route)} This is not a promise of publication.</p></section>
-<section class="contact"><h2>Would you like us to have a look?</h2><p>There is no charge for this initial contact or for us to decide whether we would like to see more. You are not committing to any paid service.</p><form id="contact-form" novalidate><div class="field"><label for="name">Name</label><input id="name" required></div><div class="field"><label for="email">Email</label><input id="email" type="email" required></div><div class="field"><label for="country">Country</label><input id="country" required></div><div class="field"><label for="preferred-language">Preferred language</label><input id="preferred-language" required></div><div class="field"><label for="phone">Optional phone / WhatsApp</label><input id="phone"></div><div class="field"><label for="note">Brief note</label><textarea id="note"></textarea></div><label class="checkbox"><input id="consent" type="checkbox" required><span>I consent to Clear Copy Clinic contacting me about this project.</span></label><p class="error" id="contact-error" role="alert" hidden>Please complete the required fields and consent to being contacted.</p><button class="button" style="margin-top:22px" type="submit">Send initial enquiry</button></form><p class="notice" style="margin-top:22px">For this MVP, the assessment is not stored or sent automatically. Contact details are prepared only when you choose to send this enquiry.</p></section>`;
-  $("#contact-form").addEventListener("submit",contact);focusContent();
+<section class="contact"><h2>Would you like a personal reply?</h2><p>Your answers are now included in the enquiry form above. Review them, add your contact details and approximate word count, then send the enquiry if you would like a personal reply. He will give you a first personal reply within one working day.</p><a class="button" href="#assessment">Go to the personal enquiry form</a><p class="fine">Or email <a href="mailto:willemkempen@clearcopy.clinic">willemkempen@clearcopy.clinic</a>.</p></section>`;
+  const answers=Object.fromEntries(Object.entries(model).filter(([key])=>key!=="diagnostic_view"));
+  const stages={"idea only":"Idea only","notes/research/talks/articles/material":"Notes or research","started manuscript":"Partial manuscript","completed first draft":"Complete manuscript","fairly polished manuscript":"Complete manuscript","previously submitted to publisher/agent":"Previously submitted or rejected","some version already published":"Published, considering a new version"};
+  document.dispatchEvent(new CustomEvent("ccc:book-selfcheck",{detail:{answers,projectStage:stages[model.project_stage]||""}}));
+  focusContent();
 }
-function contact(event){event.preventDefault();const f=event.currentTarget;if(!f.checkValidity()){$("#contact-error").hidden=false;return}const body=`Book project enquiry\n\nName: ${$("#name").value}\nEmail: ${$("#email").value}\nCountry: ${$("#country").value}\nPreferred language: ${$("#preferred-language").value}\nPhone/WhatsApp: ${$("#phone").value}\n\nProject stage: ${model.project_stage}\nPublication type: ${model.publication_type}\nPublication language: ${model.publication_language}\nConcept: ${model.concept_summary}\nIntended readers: ${model.audience_types.join("; ")}\nGeographic reach: ${model.geographic_market}\nMaterial volume: ${model.material_volume}\nDevelopment needs: ${model.development_needs.join("; ")}\nSuccess goals: ${model.success_goal.join("; ")}\n\nInitial qualitative diagnosis:\n${Object.values(model.diagnostic_view).map(d=>`${d.name}: ${d.state}`).join("\n")}\n\nNote: ${$("#note").value}`;window.location.href=`mailto:hello@clearcopy.clinic?subject=${encodeURIComponent("Book project initial enquiry")}&body=${encodeURIComponent(body)}`;}
 render(false);
 
 // Share only the public page, never answers or contact details.
@@ -223,7 +225,7 @@ function setupAssessmentSharing(){
     try{
       if(typeof navigator.share==="function"){
         try{
-          await navigator.share({title:"Could your idea become a book?",text:"Have an idea for a book? This free Clear Copy Clinic assessment helps you work out what stage the project is at and what might need to happen next.",url});
+          await navigator.share({title:"Could your idea become a book?",text:"Have an idea for a book? Clear Copy Clinic offers a free personal suitability check and an optional automated book self-check.",url});
           return;
         }catch(error){if(error.name==="AbortError")return;}
       }
