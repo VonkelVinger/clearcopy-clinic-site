@@ -214,3 +214,19 @@ footer :focus-visible,.book-strip :focus-visible{outline-color:#f5ad91}
 }
 @media(prefers-reduced-motion:reduce){.button,a{transition:none}.button:hover{transform:none}}
 @media(max-width:380px){nav{gap:6px}nav .button{padding-inline:8px;white-space:nowrap}}
+
+/* Direct email contact. */
+.hero-email{font-size:.875rem;margin-top:9px;overflow-wrap:anywhere}
+.email-card{align-self:start;min-width:0;padding:34px;background:#fffdf8;border:1px solid var(--line);border-top:5px solid var(--teal);box-shadow:7px 7px 0 #102e4309}
+.email-card .eyebrow{margin-bottom:19px}.email-card h3{font-size:1.8rem;margin:0 0 18px}
+.email-card p,.email-card li{color:var(--muted)}.email-card ul{padding-left:21px;margin:0 0 25px}
+.email-card li+li{margin-top:9px}.email-card .button{margin-top:9px}
+.email-card .email-address{font-size:1.05rem;font-weight:650;color:var(--ink);overflow-wrap:anywhere;margin-top:25px}
+.email-card .fine{font-size:.875rem;line-height:1.6;margin-bottom:0}.email-card .fine+.fine{margin-top:14px}
+.project-summary{display:block;width:100%;max-width:100%;min-height:200px;margin:12px 0 20px;resize:vertical;line-height:1.6}
+.contact .actions{display:flex;gap:12px;flex-wrap:wrap}.contact>label{font-weight:700}
+.contact .fine{overflow-wrap:anywhere}
+@media(max-width:720px){.email-card{padding:27px 23px;box-shadow:4px 4px 0 #102e4309}.email-card h3{font-size:1.6rem}.email-card .email-address{font-size:1rem}}
+
+.contact .button.secondary{background:transparent;color:var(--teal);border-color:var(--teal)}
+.contact .button.secondary:hover{background:var(--teal);color:#fff}

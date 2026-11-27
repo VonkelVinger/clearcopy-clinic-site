@@ -176,8 +176,15 @@ function projectGuidance(view){
   const route=view.concept.state==="Needs definition"||view.material_readiness.state==="Early stage"?"Define and structure the book first.":view.audience.state!=="Clear"?"Audience and positioning work would be a useful next step.":view.material_readiness.state==="Ready for closer assessment"?"A closer manuscript assessment would help identify the development required.":view.publishing_path.state==="Fairly clear"?"A publication-path discussion alongside review of the available material would be useful.":"Developmental editing or manuscript development is the likely next conversation.";
   return {promising:promising.slice(0,4),development:[...new Set(development)].slice(0,4),material,route};
 }
+function emailProjectSummary(){
+  const labels={project_stage:"Project stage",publication_type:"Type of book",publication_language:"Language",concept_summary:"Book idea",why_exists:"Why this book",audience_types:"Intended readers",geographic_market:"Reader reach",niche_level:"Audience scale (1–5)",author_authority:"Connection to the subject",author_establishment:"Experience in the field",author_platform:"Existing readership or platform",material_volume:"Available material",development_needs:"Help needed",development_openness:"Openness to development",market_awareness:"Comparable books",success_goal:"Success would mean",previous_barriers:"Previous barriers"};
+  return Object.entries(labels).map(([key,label])=>{
+    const value=Array.isArray(model[key])?model[key].join(", "):String(model[key]??"");
+    return value?label+": "+value:"";
+  }).filter(Boolean).join("\n\n");
+}
 function results(){
-  const view=diagnose(),guidance=projectGuidance(view);
+  const view=diagnose(),guidance=projectGuidance(view),summary=emailProjectSummary();
   const heading=view.material_readiness.state==="Early stage"?"The project is still early, which means the next step is definition rather than publication.":view.concept.state==="Promising"&&view.audience.state==="Clear"&&view.material_readiness.state==="Ready for closer assessment"?"There is enough here to look more closely.":"This looks developable, but some fundamentals still need work.";
   app.innerHTML=`<section class="result-head"><p class="eyebrow">AUTOMATED PROJECT VIEW</p><h2 tabindex="-1">${heading}</h2><p>This view is generated automatically from your answers using fixed rules. It is not a personal manuscript assessment or a prediction of sales.</p></section>
   <div class="diagnostic-view">${Object.values(view).map(d=>`<section class="diagnostic"><h3>${esc(d.name)} <span>${esc(d.state)}</span></h3><p>${esc(d.reason)}</p></section>`).join("")}</div>
@@ -185,10 +192,18 @@ function results(){
   <section class="guidance"><h2>What needs development</h2><ul>${guidance.development.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></section>
   <section class="guidance"><h2>Material to consider next</h2><p>${esc(guidance.material)}</p></section>
   <section class="guidance route"><h2>A possible next step</h2><p>${esc(guidance.route)} This is not a promise of publication.</p></section>
-<section class="contact"><h2>Would you like a personal reply?</h2><p>Your answers are now included in the enquiry form above. Review them, add your contact details and approximate word count, then send the enquiry if you would like a personal reply. He will give you a first personal reply within one working day.</p><a class="button" href="#assessment">Go to the personal enquiry form</a><p class="fine">Or email <a href="mailto:willemkempen@clearcopy.clinic">willemkempen@clearcopy.clinic</a>.</p></section>`;
-  const answers=Object.fromEntries(Object.entries(model).filter(([key])=>key!=="diagnostic_view"));
-  const stages={"idea only":"Idea only","notes/research/talks/articles/material":"Notes or research","started manuscript":"Partial manuscript","completed first draft":"Complete manuscript","fairly polished manuscript":"Complete manuscript","previously submitted to publisher/agent":"Previously submitted or rejected","some version already published":"Published, considering a new version"};
-  document.dispatchEvent(new CustomEvent("ccc:book-selfcheck",{detail:{answers,projectStage:stages[model.project_stage]||""}}));
+<section class="contact"><h2>Would you like a personal reply?</h2><p>Copy your summary below, then open an email and paste it into your message. You can edit or remove anything before sending. I’ll give you a first personal reply within one working day.</p><label for="email-project-summary">Your project summary</label><textarea class="project-summary" id="email-project-summary" rows="10" spellcheck="false">${esc(summary)}</textarea><div class="actions"><button type="button" class="button secondary" id="copy-project-summary">Copy summary</button><a class="button" href="mailto:willemkempen@clearcopy.clinic?subject=Book%20suitability%20check">Email Willem</a></div><p class="fine" id="summary-copy-status" role="status" aria-live="polite"></p><p class="fine">The email button opens your email app. You can also use this address in your usual email service: <a href="mailto:willemkempen@clearcopy.clinic">willemkempen@clearcopy.clinic</a>. Nothing is sent automatically.</p></section>`;
+  document.getElementById("copy-project-summary").addEventListener("click",async()=>{
+    const field=document.getElementById("email-project-summary"),status=document.getElementById("summary-copy-status");
+    try{
+      if(!navigator.clipboard?.writeText)throw new Error("Clipboard unavailable");
+      await navigator.clipboard.writeText(field.value);
+      status.textContent="Summary copied. Paste it into your email and review it before sending.";
+    }catch{
+      field.focus();field.select();
+      status.textContent="Summary selected. Copy it, then paste it into your email.";
+    }
+  });
   focusContent();
 }
 render(false);
